@@ -2,7 +2,7 @@ package tg
 
 type UpdateResponse struct {
 	Ok     bool     `json:"ok"`
-	Result []Update `json:"result"`
+	Result Update `json:"result"`
 }
 
 type Update struct {

@@ -68,10 +68,8 @@ func (c *Client) Update() ([]Update, error) {
 			log.Fatal(err)
 			return
 		}
-		log.Print("debuggin Update()")
-		for _, u := range res.Result {
-			log.Printf(u.Msg.Text)
-		}
+		
+		log.Printf(res.Result.Msg.Text)
 		
 	}
 	/*l, err := net.Listen("tcp", c.listenPort)
@@ -82,6 +80,7 @@ func (c *Client) Update() ([]Update, error) {
 	if err := http.ListenAndServe(c.listenPort, nil); err != nil {
 		log.Fatal(err)
 	}
+	log.Print("debuggin Update() after ListenAndServe()")
 	return res.Result, nil
 
 	/*var res UpdateResponse
