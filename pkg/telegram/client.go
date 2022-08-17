@@ -3,8 +3,6 @@ package tg
 import (
 	"encoding/json"
 	"io"
-	"net"
-
 	//"net"
 	"net/http"
 	"net/url"
@@ -67,11 +65,11 @@ func (c *Client) Update() ([]Update, error) {
 			return
 		}
 	}
-	l, err := net.Listen("tcp", c.listenPort)
+	/*l, err := net.Listen("tcp", c.listenPort)
 	if err != nil {
 		return nil, err
-	}
-	go http.Serve(l, http.HandlerFunc(handler))
+	}*/
+	go http.ListenAndServe(c.listenPort, http.HandlerFunc(handler))
 	return res.Result, nil
 
 	/*var res UpdateResponse
