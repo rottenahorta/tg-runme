@@ -40,12 +40,12 @@ func (b *Bot) Start() error {
 
 	//for {
 		ev, err := b.fetcher.Fetch()
-		log.Printf("fetchin")
 		if err != nil {
 			er.Log("bot error fetching event", err)
 			return err
 			//continue
 		}
+		log.Printf("fetchin v2")
 		/*if len(ev) == 0 {
 			time.Sleep(time.Second)
 			continue
