@@ -36,7 +36,7 @@ func NewClient(h, t, lp string) *Client {
 	c.host = h
 }*/
 
-func (c *Client) Update() (Update, error) {
+func (c *Client) Update() (chan *Update, error) {
 	/*q := url.Values{} // addin params
 	q.Add("offset", strconv.Itoa(o))
 	q.Add("limit", strconv.Itoa(l))
@@ -50,15 +50,13 @@ func (c *Client) Update() (Update, error) {
 		return nil, err
 	}*/
 
-	var res Update
-	//updates := make(chan *Update)
+	updates := make(chan *Update)
+
+	//var res Update
 	handler := func(w http.ResponseWriter, r *http.Request) {
-		/*up := &Update{}
-		err := json.NewDecoder(r.Body).Decode(up)
-		if err != nil {
-			return
-		}*/
-		//updates <- up
+
+		res := &Update{}
+
 		defer func() { _ = r.Body.Close() }()
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
@@ -70,6 +68,8 @@ func (c *Client) Update() (Update, error) {
 			log.Fatal(err)
 			return
 		}
+
+		updates <- res
 		
 		log.Printf(res.Msg.Text)
 		
@@ -77,16 +77,16 @@ func (c *Client) Update() (Update, error) {
 	
 	l, err := net.Listen("tcp", c.listenPort)
 	if err != nil {
-		return Update{}, err
+		return nil, err
 	}
-	http.Serve(l, http.HandlerFunc(handler))
+	go http.Serve(l, http.HandlerFunc(handler))
 
 	/*go http.HandleFunc("/"+c.path, handler)
 	if err := http.ListenAndServe(c.listenPort, nil); err != nil {
 		log.Fatal(err)
 	}*/
 	log.Print("debuggin Update() after Serve()")
-	return res, nil
+	return updates, nil
 
 	/*var res UpdateResponse
 	if err := json.Unmarshal(d, &res); err != nil {

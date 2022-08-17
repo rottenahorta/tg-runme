@@ -26,7 +26,7 @@ func NewProcessor(c *Client) *Processor { //, r repo.Repo) *Processor {
 }
 
 func (p *Processor) Fetch() (events.Event, error) {
-	u, err := p.tg.Update()
+	upd, err := p.tg.Update()
 	log.Print("fetchin in Fetch()")
 	if err != nil {
 		return events.Event{}, er.Log("cant get event update", err)
@@ -35,9 +35,39 @@ func (p *Processor) Fetch() (events.Event, error) {
 		return nil, nil
 	}*/
 
+	for {
+		select {
+		case u := <-upd:
+			res := events.Event{
+				Text: func() string {
+					if u.Msg == nil {
+						return ""
+					}
+					return u.Msg.Text
+				}(),
+				Type: func() events.Type {
+					if u.Msg == nil {
+						return events.Unknown
+					}
+					return events.Message
+				}(),
+				Meta: func() Meta {
+					if u.Msg == nil {
+						return Meta{}
+					}
+					return Meta{
+						Chatid: u.Msg.Chat.Id,
+						Uname:  u.Msg.From.Uname,
+					}
+				}(),
+			}
+			return res, nil
+		}
+	}
+
 	//res := make([]events.Event, 0, len(updates))
 	//for _, u := range updates {
-	res := /*append(res, */events.Event{
+	/*res := append(res, events.Event{
 		Text: func() string {
 			if u.Msg == nil {
 				return ""
@@ -59,10 +89,11 @@ func (p *Processor) Fetch() (events.Event, error) {
 				Uname:  u.Msg.From.Uname,
 			}
 		}(),
-	}//)
+	}*/
+	//)
 	//}
 	//p.offset = updates[len(updates)-1].Id + 1
-	return res, nil
+	//return res, nil
 }
 
 func (p *Processor) Process(ev events.Event) error {
