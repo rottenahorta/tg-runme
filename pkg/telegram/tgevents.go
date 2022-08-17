@@ -30,7 +30,7 @@ func (p *Processor) Fetch() (events.Event, error) {
 	for update := range upd {
 		log.Printf("%+v\n", update)
 	}
-	
+
 	log.Print("fetchin in Fetch()")
 	if err != nil {
 		return events.Event{}, er.Log("cant get event update", err)
@@ -65,6 +65,7 @@ func (p *Processor) Fetch() (events.Event, error) {
 					}
 				}(),
 			}
+			log.Print(res)
 			return res, nil
 		}
 	}
