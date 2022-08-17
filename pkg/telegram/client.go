@@ -50,7 +50,7 @@ func (c *Client) Update(o, l int) ([]Update, error) {
 	return res.Result, nil
 }
 
-func (c *Client) SetWH(u string) error {
+/*func (c *Client) SetWH(u string) error {
 	q := url.Values{}
 	q.Add("url", u)
 	_, err := c.doRequest("setWebhook", q)
@@ -68,7 +68,7 @@ func (c *Client) CheckWH(u string) ([]byte, error) {
 		return nil, er.Log("cant check wh", err)
 	}
 	return d, nil
-}
+}*/
 
 func (c *Client) Send(chatId int, m string) error {
 	q := url.Values{}

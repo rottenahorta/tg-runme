@@ -72,7 +72,7 @@ func (p *Processor) Process(ev events.Event) error {
 	}
 }
 
-func (p *Processor) SetWH(u string) error {
+/*func (p *Processor) SetWH(u string) error {
 	return p.tg.SetWH(u)
 }
 
@@ -82,7 +82,7 @@ func (p *Processor) CheckWH(u string) ([]byte,error) {
 
 func (p *Processor) ChangeHost(h string) {
 	p.tg.ChangeHost(h)
-}
+}*/
 
 func (p *Processor) processMsg(ev events.Event) error {
 	meta, err := func() (Meta, error) {
