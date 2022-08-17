@@ -46,6 +46,13 @@ func (c *Client) Update() (chan *Update, error) {
 		return nil, err
 	}*/
 
+	q := url.Values{}
+	q.Add("url", c.host+"/"+c.path)
+	_, err := c.doRequest("setWebhook", q)
+	if err != nil {
+		return nil,er.Log("cant send msg", err)
+	}
+
 	updates := make(chan *Update)
 
 	//var res Update

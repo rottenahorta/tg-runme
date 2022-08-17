@@ -11,5 +11,5 @@ func (p *Processor) doCmd(msg, uname string, chatId int) error {
 }
 
 func (p *Processor) cmdStart (uname string, chatId int) error{
-	return p.tg.Send(chatId, msgStart+uname+msgHello)
+	return p.tg.Send(chatId, msgStart+uname+"\n"+msgHello)
 }
