@@ -24,9 +24,9 @@ func NewClient(h, t string) *Client {
 		host:   h}
 }
 
-func (c *Client) ChangeHost(h string) {
+/*func (c *Client) ChangeHost(h string) {
 	c.host = h
-}
+}*/
 
 func (c *Client) Update(o, l int) ([]Update, error) {
 	/*q := url.Values{} // addin params
