@@ -8,6 +8,7 @@ type Processor interface {
 	Process(e Event) error
 	SetWH(u string) error
 	CheckWH(u string) ([]byte, error)
+	ChangeHost(h string)
 }
 
 type Type int

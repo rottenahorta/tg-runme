@@ -24,7 +24,11 @@ func NewClient(h, t string) *Client {
 		host:   h}
 }
 
-func (c *Client) Update(o, l int) (upd []Update, err error) {
+func (c *Client) ChangeHost(h string) {
+	c.host = h
+}
+
+func (c *Client) Update(o, l int) ([]Update, error) {
 	/*q := url.Values{} // addin params
 	q.Add("offset", strconv.Itoa(o))
 	q.Add("limit", strconv.Itoa(l))
@@ -32,22 +36,15 @@ func (c *Client) Update(o, l int) (upd []Update, err error) {
 	if err != nil {
 		return nil, err
 	}*/
-	req, err := http.NewRequest("GET", "/webhook/", nil)
-	if err != nil {
-		return nil, err
-	}
-	resp, err := c.client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer func() { _ = resp.Body.Close() }()
-	body, err := io.ReadAll(resp.Body)
+
+	d, err := c.doRequest("", nil)
 	if err != nil {
 		return nil, err
 	}
 
+
 	var res UpdateResponse
-	if err := json.Unmarshal(body, &res); err != nil {
+	if err := json.Unmarshal(d, &res); err != nil {
 		return nil, err
 	}
 	return res.Result, nil

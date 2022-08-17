@@ -17,15 +17,19 @@ func main() {
 
 	bot := tg.NewBot("api.telegram.org", os.Getenv("TOKEN"), 100) //, "https://tg-runme.herokuapp.com/") // add WH host as new var, delete l var
 	log.Printf("bot start")
-	err := bot.SetWH("https://tg-runme.herokuapp.com/webhook/" + os.Getenv("TOKEN"))
+	wh := "https://tg-runme.herokuapp.com/webhook/bot" + os.Getenv("TOKEN")
+	err := bot.SetWH(wh)
 	if err != nil {
 		log.Fatalln("wh not connected",err.Error())
 	}
-	res, err := bot.CheckWH("https://tg-runme.herokuapp.com/webhook/" + os.Getenv("TOKEN"))
+	res, err := bot.CheckWH(wh)
 	if err != nil {
 		log.Fatalln("wh not recieved",err.Error())
 	}
 	log.Printf("wh received %s", res)
+
+	bot.ChangeHost(wh) 
+
 	go http.ListenAndServe(":" + os.Getenv("PORT"), nil)
 	bot.Start()
 }

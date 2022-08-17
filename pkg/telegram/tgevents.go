@@ -80,6 +80,10 @@ func (p *Processor) CheckWH(u string) ([]byte,error) {
 	return p.tg.CheckWH(u)
 }
 
+func (p *Processor) ChangeHost(h string) {
+	p.tg.ChangeHost(h)
+}
+
 func (p *Processor) processMsg(ev events.Event) error {
 	meta, err := func() (Meta, error) {
 		m, ok := ev.Meta.(Meta)

@@ -18,6 +18,10 @@ func NewBot(h, t string, l int) *Bot {
 	return &Bot{fetcher: p, processor: p} //, limit: l}
 }
 
+func (b *Bot) ChangeHost(h string) {
+	b.processor.ChangeHost(h)
+}
+
 func (b *Bot) SetWH(u string) error {
 	return b.processor.SetWH(u)
 }
