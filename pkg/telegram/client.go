@@ -32,10 +32,6 @@ func NewClient(h, t, lp string) *Client {
 		listenPort: lp}
 }
 
-/*func (c *Client) ChangeHost(h string) {
-	c.host = h
-}*/
-
 func (c *Client) Update() (chan *Update, error) {
 	/*q := url.Values{} // addin params
 	q.Add("offset", strconv.Itoa(o))
@@ -55,7 +51,7 @@ func (c *Client) Update() (chan *Update, error) {
 	//var res Update
 	handler := func(w http.ResponseWriter, r *http.Request) {
 
-		var res *Update
+		res := &Update{}
 
 		defer func() { _ = r.Body.Close() }()
 		body, err := io.ReadAll(r.Body)
@@ -94,26 +90,6 @@ func (c *Client) Update() (chan *Update, error) {
 	}
 	return res.Result, nil*/
 }
-
-/*func (c *Client) SetWH(u string) error {
-	q := url.Values{}
-	q.Add("url", u)
-	_, err := c.doRequest("setWebhook", q)
-	if err != nil {
-		return er.Log("cant set wh", err)
-	}
-	return nil
-}
-
-func (c *Client) CheckWH(u string) ([]byte, error) {
-	q := url.Values{}
-	q.Add("url", u)
-	d, err := c.doRequest("getWebhookInfo", q)
-	if err != nil {
-		return nil, er.Log("cant check wh", err)
-	}
-	return d, nil
-}*/
 
 func (c *Client) Send(chatId int, m string) error {
 	q := url.Values{}
