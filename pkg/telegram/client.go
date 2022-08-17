@@ -64,11 +64,14 @@ func (c *Client) Update() ([]Update, error) {
 			log.Fatal(err)
 			return
 		}
-		log.Printf(string(body))
 		if err := json.Unmarshal(body, &res); err != nil {
 			log.Fatal(err)
 			return
 		}
+		for _, u := range res.Result {
+			log.Printf(u.Msg.Text)
+		}
+		
 	}
 	/*l, err := net.Listen("tcp", c.listenPort)
 	if err != nil {
