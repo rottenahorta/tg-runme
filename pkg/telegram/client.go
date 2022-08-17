@@ -49,7 +49,7 @@ func (c *Client) Update() (Update, error) {
 		return nil, err
 	}*/
 
-	var res UpdateResponse
+	var res Update
 	//updates := make(chan *Update)
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		/*up := &Update{}
@@ -70,7 +70,7 @@ func (c *Client) Update() (Update, error) {
 			return
 		}
 		
-		//log.Printf(res.Result.Msg.Text)
+		log.Printf(res.Msg.Text)
 		
 	}
 	/*l, err := net.Listen("tcp", c.listenPort)
@@ -82,7 +82,7 @@ func (c *Client) Update() (Update, error) {
 		log.Fatal(err)
 	}
 	log.Print("debuggin Update() after ListenAndServe()")
-	return res.Result, nil
+	return res, nil
 
 	/*var res UpdateResponse
 	if err := json.Unmarshal(d, &res); err != nil {
