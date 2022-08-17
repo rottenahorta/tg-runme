@@ -34,5 +34,8 @@ func main() {
 	log.Printf("bot port: %s", os.Getenv("PORT"))
 
 	//go http.ListenAndServe(":"+os.Getenv("PORT"), nil)
-	bot.Start()
+	err := bot.Start()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
