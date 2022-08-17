@@ -16,7 +16,7 @@ func main() {
 	//}
 
 	//bot := tg.NewBot("api.telegram.org", os.Getenv("TOKEN"), 100) //, "https://tg-runme.herokuapp.com/") // add WH host as new var, delete l var
-	bot := tg.NewBot("tg-runme.herokuapp.com:" + os.Getenv("PORT"), os.Getenv("TOKEN"), 100)
+	bot := tg.NewBot("tg-runme.herokuapp.com", os.Getenv("TOKEN"), 100)
 	log.Printf("bot start debug")
 	/*wh := "https://tg-runme.herokuapp.com/webhook/bot" + os.Getenv("TOKEN")
 	err := bot.SetWH(wh)
