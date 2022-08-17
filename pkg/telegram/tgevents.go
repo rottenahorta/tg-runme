@@ -13,7 +13,6 @@ import (
 type Processor struct {
 	tg *Client
 	//repo repo.Repo
-	//offset int
 }
 
 type Meta struct {
@@ -104,18 +103,6 @@ func (p *Processor) Process(ev events.Event) error {
 		return er.Log("cant process unknown tg event", errors.New("unknown tg type"))
 	}
 }
-
-/*func (p *Processor) SetWH(u string) error {
-	return p.tg.SetWH(u)
-}
-
-func (p *Processor) CheckWH(u string) ([]byte,error) {
-	return p.tg.CheckWH(u)
-}
-
-func (p *Processor) ChangeHost(h string) {
-	p.tg.ChangeHost(h)
-}*/
 
 func (p *Processor) processMsg(ev events.Event) error {
 	meta, err := func() (Meta, error) {

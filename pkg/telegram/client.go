@@ -55,7 +55,7 @@ func (c *Client) Update() (chan *Update, error) {
 	//var res Update
 	handler := func(w http.ResponseWriter, r *http.Request) {
 
-		res := &Update{}
+		var res *Update
 
 		defer func() { _ = r.Body.Close() }()
 		body, err := io.ReadAll(r.Body)
