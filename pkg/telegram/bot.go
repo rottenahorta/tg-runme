@@ -19,18 +19,6 @@ func NewBot(h, t, lp string) *Bot {
 	return &Bot{fetcher: p, processor: p} //, limit: l}
 }
 
-/*func (b *Bot) ChangeHost(h string) {
-	b.processor.ChangeHost(h)
-}
-
-func (b *Bot) SetWH(u string) error {
-	return b.processor.SetWH(u)
-}
-
-func (b *Bot) CheckWH(u string) ([]byte,error) {
-	return b.processor.CheckWH(u)
-}*/
-
 func (b *Bot) Start() error {
 
 	/*updates, err := b.fetcher.Fetch()

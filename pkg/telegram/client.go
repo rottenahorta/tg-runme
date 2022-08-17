@@ -32,7 +32,8 @@ func NewClient(h, t, lp string) *Client {
 		listenPort: lp}
 }
 
-func (c *Client) Update() (chan *Update, error) {
+type Updates <-chan Update
+func (c *Client) Update() (Updates, error) {
 	/*q := url.Values{} // addin params
 	q.Add("offset", strconv.Itoa(o))
 	q.Add("limit", strconv.Itoa(l))
@@ -53,12 +54,13 @@ func (c *Client) Update() (chan *Update, error) {
 		return nil,er.Log("cant send msg", err)
 	}
 
-	updates := make(chan *Update)
+	updates := make(chan Update, 100)
 
 	//var res Update
 	handler := func(w http.ResponseWriter, r *http.Request) {
 
-		res := &Update{}
+		//res := &Update{}
+		var res Update
 
 		defer func() { _ = r.Body.Close() }()
 		body, err := io.ReadAll(r.Body)
@@ -67,6 +69,7 @@ func (c *Client) Update() (chan *Update, error) {
 			return
 		}
 		log.Printf(string(body))
+		log.Printf("method of handler WH: %s", r.Method)
 		if err := json.Unmarshal(body, &res); err != nil {
 			log.Fatal(err)
 			return
