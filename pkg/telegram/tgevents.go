@@ -37,29 +37,29 @@ func (p *Processor) Fetch() (events.Event, error) {
 
 	//res := make([]events.Event, 0, len(updates))
 	//for _, u := range updates {
-		res := /*append(res, */events.Event{
-			Text: func() string {
-				if u.Msg == nil {
-					return ""
-				}
-				return u.Msg.Text
-			}(),
-			Type: func() events.Type {
-				if u.Msg == nil {
-					return events.Unknown
-				}
-				return events.Message
-			}(),
-			Meta: func() Meta {
-				if u.Msg == nil {
-					return Meta{}
-				}
-				return Meta{
-					Chatid: u.Msg.Chat.Id,
-					Uname:  u.Msg.From.Uname,
-				}
-			}(),
-		}//)
+	res := /*append(res, */events.Event{
+		Text: func() string {
+			if u.Msg == nil {
+				return ""
+			}
+			return u.Msg.Text
+		}(),
+		Type: func() events.Type {
+			if u.Msg == nil {
+				return events.Unknown
+			}
+			return events.Message
+		}(),
+		Meta: func() Meta {
+			if u.Msg == nil {
+				return Meta{}
+			}
+			return Meta{
+				Chatid: u.Msg.Chat.Id,
+				Uname:  u.Msg.From.Uname,
+			}
+		}(),
+	}//)
 	//}
 	//p.offset = updates[len(updates)-1].Id + 1
 	return res, nil

@@ -70,7 +70,7 @@ func (c *Client) Update() (Update, error) {
 			return
 		}
 		
-		log.Printf(res.Result.Msg.Text)
+		//log.Printf(res.Result.Msg.Text)
 		
 	}
 	/*l, err := net.Listen("tcp", c.listenPort)
