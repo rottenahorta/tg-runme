@@ -17,7 +17,7 @@ func main() {
 	//}
 
 	//bot := tg.NewBot("api.telegram.org", os.Getenv("TOKEN"), 100) //, "https://tg-runme.herokuapp.com/") // add WH host as new var, delete l var
-	bot := tg.NewBot("https://tg-runme.herokuapp.com", os.Getenv("TOKEN"), ":"+os.Getenv("PORT"))
+	bot := tg.NewBot("tg-runme.herokuapp.com", os.Getenv("TOKEN"), ":"+os.Getenv("PORT"))
 	log.Printf("bot start debug")
 	/*wh := "https://tg-runme.herokuapp.com/webhook/bot" + os.Getenv("TOKEN")
 	err := bot.SetWH(wh)
@@ -34,7 +34,5 @@ func main() {
 	log.Printf("bot port: %s", os.Getenv("PORT"))
 
 	//go http.ListenAndServe(":"+os.Getenv("PORT"), nil)
-	err := bot.Start()
-	if err != nil {
-		log.Fatalf("errorstartin: %w", err) }
+	bot.Start()
 }
