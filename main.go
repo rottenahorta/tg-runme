@@ -32,6 +32,6 @@ func main() {
 	bot.ChangeHost(wh) */
 	log.Printf("bot port: %s", os.Getenv("PORT"))
 
-	go http.ListenAndServe(":"+os.Getenv("PORT"), nil)
+	go http.ListenAndServe("0.0.0.0:"+os.Getenv("PORT"), nil)
 	bot.Start()
 }
