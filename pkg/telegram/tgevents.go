@@ -25,19 +25,19 @@ func NewProcessor(c *Client) *Processor { //, r repo.Repo) *Processor {
 	return &Processor{tg: c} //,repo:r}
 }
 
-func (p *Processor) Fetch() ([]events.Event, error) {
-	updates, err := p.tg.Update()
+func (p *Processor) Fetch() (events.Event, error) {
+	u, err := p.tg.Update()
 	log.Print("fetchin in Fetch()")
 	if err != nil {
-		return nil, er.Log("cant get event update", err)
+		return events.Event{}, er.Log("cant get event update", err)
 	}
-	if len(updates) == 0 {
+	/*if len(updates) == 0 {
 		return nil, nil
-	}
+	}*/
 
-	res := make([]events.Event, 0, len(updates))
-	for _, u := range updates {
-		res = append(res, events.Event{
+	//res := make([]events.Event, 0, len(updates))
+	//for _, u := range updates {
+		res := /*append(res, */events.Event{
 			Text: func() string {
 				if u.Msg == nil {
 					return ""
@@ -59,8 +59,8 @@ func (p *Processor) Fetch() ([]events.Event, error) {
 					Uname:  u.Msg.From.Uname,
 				}
 			}(),
-		})
-	}
+		}//)
+	//}
 	//p.offset = updates[len(updates)-1].Id + 1
 	return res, nil
 }

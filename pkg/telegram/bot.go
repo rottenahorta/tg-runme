@@ -50,13 +50,13 @@ func (b *Bot) Start() error {
 			time.Sleep(time.Second)
 			continue
 		}*/
-		for _, e := range ev {
-			if err := b.processor.Process(e); err != nil {
-				er.Log("bot error processing event", err)
-				return err
-			//	continue
-			}
+		//for _, e := range ev {
+		if err := b.processor.Process(ev); err != nil {
+			er.Log("bot error processing event", err)
+			return err
+		//	continue
 		}
+		//}
 		return nil
 	//}
 }

@@ -35,7 +35,7 @@ func NewClient(h, t, lp string) *Client {
 	c.host = h
 }*/
 
-func (c *Client) Update() ([]Update, error) {
+func (c *Client) Update() (Update, error) {
 	/*q := url.Values{} // addin params
 	q.Add("offset", strconv.Itoa(o))
 	q.Add("limit", strconv.Itoa(l))
