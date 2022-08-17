@@ -13,8 +13,8 @@ type Bot struct {
 	port     int
 }
 
-func NewBot(h, t string, port int) *Bot {
-	p := NewProcessor(NewClient(h, t, port))
+func NewBot(h, t, lp string) *Bot {
+	p := NewProcessor(NewClient(h, t, lp))
 	return &Bot{fetcher: p, processor: p} //, limit: l}
 }
 
@@ -31,6 +31,12 @@ func (b *Bot) CheckWH(u string) ([]byte,error) {
 }*/
 
 func (b *Bot) Start() error {
+
+	/*updates, err := b.fetcher.Fetch()
+	if err != nil {
+		return err
+	}*/
+
 	for {
 		ev, err := b.fetcher.Fetch()
 		if err != nil {

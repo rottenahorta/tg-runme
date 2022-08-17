@@ -3,6 +3,7 @@ package tg
 import (
 	"encoding/json"
 	"io"
+	"net"
 	"net/http"
 	"net/url"
 	"path"
@@ -15,15 +16,15 @@ type Client struct {
 	client http.Client
 	host   string
 	path   string
-	port   int
+	listenPort string
 }
 
-func NewClient(h, t string, port int) *Client {
+func NewClient(h, t, lp string) *Client {
 	return &Client{
 		client: http.Client{},
 		path:   makePath(t),
 		host:   h,
-		port:   port}
+		listenPort: lp}
 }
 
 /*func (c *Client) ChangeHost(h string) {
@@ -38,17 +39,41 @@ func (c *Client) Update() ([]Update, error) {
 	if err != nil {
 		return nil, err
 	}*/
-
+	/*
 	d, err := c.doRequest("", nil)
 	if err != nil {
 		return nil, err
-	}
+	}*/
 
 	var res UpdateResponse
+	//updates := make(chan *Update)
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		/*up := &Update{}
+		err := json.NewDecoder(r.Body).Decode(up)
+		if err != nil {
+			return
+		}*/
+		//updates <- up
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			return
+		}
+		if err := json.Unmarshal(body, &res); err != nil {
+			return
+		}
+	}
+	l, err := net.Listen("tcp", c.listenPort)
+	if err != nil {
+		return nil, err
+	}
+	go http.Serve(l, http.HandlerFunc(handler))
+	return res.Result, nil
+
+	/*var res UpdateResponse
 	if err := json.Unmarshal(d, &res); err != nil {
 		return nil, err
 	}
-	return res.Result, nil
+	return res.Result, nil*/
 }
 
 /*func (c *Client) SetWH(u string) error {

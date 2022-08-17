@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"net/http"
+	//"net/http"
 	"os"
 
 	//"github.com/joho/godotenv"
@@ -16,7 +16,7 @@ func main() {
 	//}
 
 	//bot := tg.NewBot("api.telegram.org", os.Getenv("TOKEN"), 100) //, "https://tg-runme.herokuapp.com/") // add WH host as new var, delete l var
-	bot := tg.NewBot("tg-runme.herokuapp.com", os.Getenv("TOKEN"), 100)
+	bot := tg.NewBot("https://tg-runme.herokuapp.com", os.Getenv("TOKEN"), ":"+os.Getenv("PORT"))
 	log.Printf("bot start debug")
 	/*wh := "https://tg-runme.herokuapp.com/webhook/bot" + os.Getenv("TOKEN")
 	err := bot.SetWH(wh)
@@ -32,6 +32,6 @@ func main() {
 	bot.ChangeHost(wh) */
 	log.Printf("bot port: %s", os.Getenv("PORT"))
 
-	go http.ListenAndServe("0.0.0.0:"+os.Getenv("PORT"), nil)
+	//go http.ListenAndServe(":"+os.Getenv("PORT"), nil)
 	bot.Start()
 }
