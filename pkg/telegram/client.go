@@ -77,7 +77,7 @@ func (c *Client) Update() (Update, error) {
 	if err != nil {
 		return nil, err
 	}*/
-	http.HandleFunc("/"+c.path, handler)
+	go http.HandleFunc("/"+c.path, handler)
 	if err := http.ListenAndServe(c.listenPort, nil); err != nil {
 		log.Fatal(err)
 	}
