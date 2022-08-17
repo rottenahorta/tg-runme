@@ -30,6 +30,7 @@ func (b *Bot) Start() error {
 
 	for {
 		ev, err := b.fetcher.Fetch()
+		log.Print(ev)
 		if err != nil {
 			er.Log("bot error fetching event", err)
 			return err
