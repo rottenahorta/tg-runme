@@ -54,6 +54,7 @@ func (c *Client) Update() ([]Update, error) {
 			return
 		}*/
 		//updates <- up
+		defer func() { _ = r.Body.Close() }()
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
 			return
