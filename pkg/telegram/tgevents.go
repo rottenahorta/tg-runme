@@ -39,36 +39,36 @@ func (p *Processor) Fetch() (events.Event, error) {
 		return nil, nil
 	}*/
 
-	for {
-		select {
-		case u := <-upd:
-			res := events.Event{
-				Text: func() string {
-					if u.Msg == nil {
-						return ""
-					}
-					return u.Msg.Text
-				}(),
-				Type: func() events.Type {
-					if u.Msg == nil {
-						return events.Unknown
-					}
-					return events.Message
-				}(),
-				Meta: func() Meta {
-					if u.Msg == nil {
-						return Meta{}
-					}
-					return Meta{
-						Chatid: u.Msg.Chat.Id,
-						Uname:  u.Msg.From.Uname,
-					}
-				}(),
-			}
-			log.Print(res)
-			return res, nil
+	//for {
+	select {
+	case u := <-upd:
+		res := events.Event{
+			Text: func() string {
+				if u.Msg == nil {
+					return ""
+				}
+				return u.Msg.Text
+			}(),
+			Type: func() events.Type {
+				if u.Msg == nil {
+					return events.Unknown
+				}
+				return events.Message
+			}(),
+			Meta: func() Meta {
+				if u.Msg == nil {
+					return Meta{}
+				}
+				return Meta{
+					Chatid: u.Msg.Chat.Id,
+					Uname:  u.Msg.From.Uname,
+				}
+			}(),
 		}
+		log.Print(res)
+		return res, nil
 	}
+	//}
 
 	//res := make([]events.Event, 0, len(updates))
 	//for _, u := range updates {
