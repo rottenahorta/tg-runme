@@ -1,6 +1,7 @@
 package tg
 
 import (
+	"log"
 	"time"
 
 	"github.com/rottenahorta/tgbotsche/pkg/events"
@@ -39,6 +40,7 @@ func (b *Bot) Start() error {
 
 	for {
 		ev, err := b.fetcher.Fetch()
+		log.Printf("fetchin")
 		if err != nil {
 			er.Log("bot error fetching event", err)
 			continue
