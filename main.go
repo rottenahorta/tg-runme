@@ -31,6 +31,7 @@ func main() {
 
 	bot.ChangeHost(wh) */
 	bot.Start()
+	log.Printf("bot port: %s", os.Getenv("PORT"))
 	
 	go http.ListenAndServe("tg-runme.herokuapp.com:" + os.Getenv("PORT") + "/webhook/bot" + os.Getenv("TOKEN"), nil)
 }

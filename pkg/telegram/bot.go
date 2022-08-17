@@ -10,11 +10,11 @@ import (
 type Bot struct {
 	fetcher   events.Fetcher
 	processor events.Processor
-	limit     int
+	port     int
 }
 
-func NewBot(h, t string, l int) *Bot {
-	p := NewProcessor(NewClient(h, t))
+func NewBot(h, t string, port int) *Bot {
+	p := NewProcessor(NewClient(h, t, port))
 	return &Bot{fetcher: p, processor: p} //, limit: l}
 }
 
@@ -32,7 +32,7 @@ func (b *Bot) CheckWH(u string) ([]byte,error) {
 
 func (b *Bot) Start() error {
 	for {
-		ev, err := b.fetcher.Fetch(b.limit)
+		ev, err := b.fetcher.Fetch()
 		if err != nil {
 			er.Log("bot error fetching event", err)
 			continue

@@ -15,20 +15,22 @@ type Client struct {
 	client http.Client
 	host   string
 	path   string
+	port   int
 }
 
-func NewClient(h, t string) *Client {
+func NewClient(h, t string, port int) *Client {
 	return &Client{
 		client: http.Client{},
 		path:   makePath(t),
-		host:   h}
+		host:   h,
+		port:   port}
 }
 
 /*func (c *Client) ChangeHost(h string) {
 	c.host = h
 }*/
 
-func (c *Client) Update(o, l int) ([]Update, error) {
+func (c *Client) Update() ([]Update, error) {
 	/*q := url.Values{} // addin params
 	q.Add("offset", strconv.Itoa(o))
 	q.Add("limit", strconv.Itoa(l))
@@ -41,7 +43,6 @@ func (c *Client) Update(o, l int) ([]Update, error) {
 	if err != nil {
 		return nil, err
 	}
-
 
 	var res UpdateResponse
 	if err := json.Unmarshal(d, &res); err != nil {

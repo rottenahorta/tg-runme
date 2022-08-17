@@ -12,7 +12,7 @@ import (
 type Processor struct {
 	tg *Client
 	//repo repo.Repo
-	offset int
+	//offset int
 }
 
 type Meta struct {
@@ -24,8 +24,8 @@ func NewProcessor(c *Client) *Processor { //, r repo.Repo) *Processor {
 	return &Processor{tg: c} //,repo:r}
 }
 
-func (p *Processor) Fetch(l int) ([]events.Event, error) {
-	updates, err := p.tg.Update(p.offset, l)
+func (p *Processor) Fetch() ([]events.Event, error) {
+	updates, err := p.tg.Update()
 	if err != nil {
 		return nil, er.Log("cant get event update", err)
 	}
@@ -59,7 +59,7 @@ func (p *Processor) Fetch(l int) ([]events.Event, error) {
 			}(),
 		})
 	}
-	p.offset = updates[len(updates)-1].Id + 1
+	//p.offset = updates[len(updates)-1].Id + 1
 	return res, nil
 }
 
