@@ -68,6 +68,7 @@ func (c *Client) Update() ([]Update, error) {
 			log.Fatal(err)
 			return
 		}
+		log.Print("debuggin Update()")
 		for _, u := range res.Result {
 			log.Printf(u.Msg.Text)
 		}

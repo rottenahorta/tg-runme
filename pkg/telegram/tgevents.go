@@ -2,6 +2,7 @@ package tg
 
 import (
 	"errors"
+	"log"
 	//"log"
 
 	"github.com/rottenahorta/tgbotsche/pkg/events"
@@ -26,6 +27,7 @@ func NewProcessor(c *Client) *Processor { //, r repo.Repo) *Processor {
 
 func (p *Processor) Fetch() ([]events.Event, error) {
 	updates, err := p.tg.Update()
+	log.Print("fetchin in Fetch()")
 	if err != nil {
 		return nil, er.Log("cant get event update", err)
 	}
