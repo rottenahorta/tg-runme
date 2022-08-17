@@ -26,19 +26,19 @@ func (b *Bot) Start() error {
 		return err
 	}*/
 
-	//for {
-	ev, err := b.fetcher.Fetch()
-	if err != nil {
-		er.Log("bot error fetching event", err)
-		return err
-		//continue
+	for {
+		ev, err := b.fetcher.Fetch()
+		if err != nil {
+			er.Log("bot error fetching event", err)
+			return err
+			//continue
+		}
+		if err := b.processor.Process(ev); err != nil {
+			er.Log("bot error processing event", err)
+			return err
+		//	continue
+		}
+		//}
+		return nil
 	}
-	if err := b.processor.Process(ev); err != nil {
-		er.Log("bot error processing event", err)
-		return err
-	//	continue
-	}
-	//}
-	return nil
-	//}
 }
