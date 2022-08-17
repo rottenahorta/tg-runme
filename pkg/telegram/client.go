@@ -3,6 +3,8 @@ package tg
 import (
 	"encoding/json"
 	"io"
+	"log"
+
 	//"net"
 	"net/http"
 	"net/url"
@@ -59,9 +61,11 @@ func (c *Client) Update() ([]Update, error) {
 		defer func() { _ = r.Body.Close() }()
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
+			log.Fatal(err)
 			return
 		}
 		if err := json.Unmarshal(body, &res); err != nil {
+			log.Fatal(err)
 			return
 		}
 	}
@@ -69,7 +73,10 @@ func (c *Client) Update() ([]Update, error) {
 	if err != nil {
 		return nil, err
 	}*/
-	go http.ListenAndServe(c.listenPort, http.HandlerFunc(handler))
+	http.HandleFunc("/"+c.path, handler)
+	if err := http.ListenAndServe(c.listenPort, nil); err != nil {
+		log.Fatal(err)
+	}
 	return res.Result, nil
 
 	/*var res UpdateResponse
