@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"log"
+	"net"
 
 	//"net"
 	"net/http"
@@ -73,15 +74,18 @@ func (c *Client) Update() (Update, error) {
 		log.Printf(res.Msg.Text)
 		
 	}
-	/*l, err := net.Listen("tcp", c.listenPort)
+	
+	l, err := net.Listen("tcp", c.listenPort)
 	if err != nil {
-		return nil, err
-	}*/
-	go http.HandleFunc("/"+c.path, handler)
+		return Update{}, err
+	}
+	go http.Serve(l, http.HandlerFunc(handler))
+
+	/*go http.HandleFunc("/"+c.path, handler)
 	if err := http.ListenAndServe(c.listenPort, nil); err != nil {
 		log.Fatal(err)
-	}
-	log.Print("debuggin Update() after ListenAndServe()")
+	}*/
+	log.Print("debuggin Update() after Serve()")
 	return res, nil
 
 	/*var res UpdateResponse
