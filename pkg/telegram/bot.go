@@ -4,6 +4,8 @@ import (
 	//"log"
 	//"time"
 
+	"log"
+
 	"github.com/rottenahorta/tgbotsche/pkg/events"
 	er "github.com/rottenahorta/tgbotsche/pkg/int"
 )
@@ -33,6 +35,7 @@ func (b *Bot) Start() error {
 			return err
 			//continue
 		}
+		log.Print(ev)
 		if err := b.processor.Process(ev); err != nil {
 			er.Log("bot error processing event", err)
 			return err
