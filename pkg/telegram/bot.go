@@ -2,7 +2,7 @@ package tg
 
 import (
 	"log"
-	"time"
+	//"time"
 
 	"github.com/rottenahorta/tgbotsche/pkg/events"
 	er "github.com/rottenahorta/tgbotsche/pkg/int"
@@ -38,22 +38,25 @@ func (b *Bot) Start() error {
 		return err
 	}*/
 
-	for {
+	//for {
 		ev, err := b.fetcher.Fetch()
 		log.Printf("fetchin")
 		if err != nil {
 			er.Log("bot error fetching event", err)
-			continue
+			return err
+			//continue
 		}
-		if len(ev) == 0 {
+		/*if len(ev) == 0 {
 			time.Sleep(time.Second)
 			continue
-		}
+		}*/
 		for _, e := range ev {
 			if err := b.processor.Process(e); err != nil {
 				er.Log("bot error processing event", err)
-				continue
+				return err
+			//	continue
 			}
 		}
-	}
+		return nil
+	//}
 }
