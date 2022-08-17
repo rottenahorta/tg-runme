@@ -64,6 +64,7 @@ func (c *Client) Update() ([]Update, error) {
 			log.Fatal(err)
 			return
 		}
+		log.Printf(string(body))
 		if err := json.Unmarshal(body, &res); err != nil {
 			log.Fatal(err)
 			return
