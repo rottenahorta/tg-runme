@@ -30,8 +30,8 @@ func main() {
 	log.Printf("wh received %s", res)
 
 	bot.ChangeHost(wh) */
-	bot.Start()
 	log.Printf("bot port: %s", os.Getenv("PORT"))
-	
-	go http.ListenAndServe(":" + os.Getenv("PORT"), nil)
+
+	go http.ListenAndServe(":"+os.Getenv("PORT"), nil)
+	bot.Start()
 }
