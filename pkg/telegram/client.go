@@ -17,6 +17,7 @@ type Client struct {
 	host   string
 	path   string
 	listenPort string
+	tghost string
 }
 
 func NewClient(h, t, lp string) *Client {
@@ -24,6 +25,7 @@ func NewClient(h, t, lp string) *Client {
 		client: http.Client{},
 		path:   makePath(t),
 		host:   h,
+		tghost: "api.telegram.org",
 		listenPort: lp}
 }
 
@@ -112,7 +114,7 @@ func (c *Client) doRequest(method string, q url.Values) (d []byte, err error) {
 	defer func() { err = er.Log("cant do req", err) }()
 	u := url.URL{
 		Scheme: "https",
-		Host:   c.host,
+		Host:   c.tghost,
 		Path:   path.Join(c.path, method),
 	}
 	req, err := http.NewRequest("GET", u.String(), nil)
