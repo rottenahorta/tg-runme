@@ -34,6 +34,7 @@ func (p *Processor) Fetch() (events.Event, error) {
 	}
 
 	for {
+		log.Print("inside for infinite loop outside select %w",ch)
 		select {
 		case u := <-ch:
 			res := events.Event{
