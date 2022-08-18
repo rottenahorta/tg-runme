@@ -25,16 +25,16 @@ func NewProcessor(c *Client) *Processor { //, r repo.Repo) *Processor {
 }
 
 func (p *Processor) Fetch() (events.Event, error) {
-	//upd, err := p.tg.Update()
+	upd, err := p.tg.Update()
 
 	/*for update := range upd {
 		log.Printf("%+v\n", update)
 	}*/
 
 	//log.Print("fetchin in Fetch()")
-	/*if err != nil {
+	if err != nil {
 		return events.Event{}, er.Log("cant get event update", err)
-	}*/
+	}
 	/*if len(updates) == 0 {
 		return nil, nil
 	}*/
@@ -44,7 +44,7 @@ func (p *Processor) Fetch() (events.Event, error) {
 
 	//select {
 	//case 
-	u := <-Updates
+	u := <-upd
 	res := events.Event{
 		Text: func() string {
 			if u.Msg == nil {
