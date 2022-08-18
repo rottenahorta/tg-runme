@@ -29,9 +29,9 @@ func (p *Processor) Fetch() (events.Event, error) {
 	go p.tg.Update(ch)
 	//upd, err := p.tg.Update()
 
-	for uu := range ch {
+	/*for uu := range ch {
 		log.Printf("ranginupdates %+v\n", uu)
-	}
+	}*/
 
 	for {
 		log.Print("inside for infinite loop outside select %w",ch)
