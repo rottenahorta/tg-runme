@@ -32,6 +32,7 @@ func NewClient(h, t, lp string) *Client {
 		listenPort: lp}
 }
 
+var Updates chan Update
 func (c *Client) Update() (chan Update, error) {
 	/*q := url.Values{} // addin params
 	q.Add("offset", strconv.Itoa(o))
@@ -53,7 +54,8 @@ func (c *Client) Update() (chan Update, error) {
 		return nil,er.Log("cant send msg", err)
 	}
 
-	updates := make(chan Update)
+	//updates := make(chan Update)
+	Updates = make(chan Update)
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 
@@ -73,9 +75,9 @@ func (c *Client) Update() (chan Update, error) {
 			return
 		}
 
-		updates <- res
+		Updates <- res
 		//defer close(updates)
-		for uu := range updates {
+		for uu := range Updates {
 			log.Print("rangin updates")
 			log.Print(uu)
 		}
@@ -91,7 +93,7 @@ func (c *Client) Update() (chan Update, error) {
 		log.Fatal(err)
 	}*/
 	//log.Print("debuggin Update() after Serve()")
-	return updates, nil
+	return Updates, nil
 
 	/*var res UpdateResponse
 	if err := json.Unmarshal(d, &res); err != nil {
