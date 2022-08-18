@@ -93,7 +93,7 @@ func (c *Client) Update() (Updates, error) {
 	if err := http.ListenAndServe(c.listenPort, nil); err != nil {
 		log.Fatal(err)
 	}*/
-	log.Print("debuggin Update() after Serve()")
+	//log.Print("debuggin Update() after Serve()")
 	return updates, nil
 
 	/*var res UpdateResponse

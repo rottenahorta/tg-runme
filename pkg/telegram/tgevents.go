@@ -31,7 +31,7 @@ func (p *Processor) Fetch() (events.Event, error) {
 		log.Printf("%+v\n", update)
 	}*/
 
-	log.Print("fetchin in Fetch()")
+	//log.Print("fetchin in Fetch()")
 	if err != nil {
 		return events.Event{}, er.Log("cant get event update", err)
 	}
@@ -102,6 +102,7 @@ func (p *Processor) Fetch() (events.Event, error) {
 }
 
 func (p *Processor) Process(ev events.Event) error {
+	log.Print("inside Process()")
 	switch ev.Type {
 	case events.Message:
 		return p.processMsg(ev)
