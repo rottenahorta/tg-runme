@@ -5,6 +5,7 @@ import (
 	//"time"
 
 	"log"
+	"time"
 
 	"github.com/rottenahorta/tgbotsche/pkg/events"
 	er "github.com/rottenahorta/tgbotsche/pkg/int"
@@ -30,6 +31,11 @@ func (b *Bot) Start() error {
 
 	for {
 		ev, err := b.fetcher.Fetch()
+		if ev.Meta==nil {
+			log.Print("nil event fetched")
+			time.Sleep(time.Second)
+			continue
+		}
 		log.Print(ev)
 		if err != nil {
 			er.Log("bot error fetching event", err)
