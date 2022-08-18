@@ -29,18 +29,9 @@ func (p *Processor) Fetch() (events.Event, error) {
 	go p.tg.Update(ch)
 	//upd, err := p.tg.Update()
 
-	/*for update := range upd {
-		log.Printf("%+v\n", update)
-	}*/
-
-	//log.Print("fetchin in Fetch()")
-	/*if err != nil {
-		return events.Event{}, er.Log("cant get event update", err)
-	}*/
-	/*if len(updates) == 0 {
-		return nil, nil
-	}*/
-	//res := &events.Event{}
+	for uu := range ch {
+		log.Printf("%+v\n", uu)
+	}
 
 	for {
 	select {
