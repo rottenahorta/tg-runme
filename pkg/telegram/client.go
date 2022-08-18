@@ -32,8 +32,8 @@ func NewClient(h, t, lp string) *Client {
 		listenPort: lp}
 }
 
-//var Updates chan Update
-func (c *Client) Update() (chan Update, error) {
+type UpdatesChan <-chan Update
+func (c *Client) Update() (UpdatesChan, error) {
 	/*q := url.Values{} // addin params
 	q.Add("offset", strconv.Itoa(o))
 	q.Add("limit", strconv.Itoa(l))
@@ -55,7 +55,7 @@ func (c *Client) Update() (chan Update, error) {
 	}
 
 	//updates := make(chan Update)
-	updates := make(chan Update)
+	updates := make(chan Update, 100)
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 
@@ -86,7 +86,7 @@ func (c *Client) Update() (chan Update, error) {
 		
 	}
 
-	http.ListenAndServe(c.listenPort, http.HandlerFunc(handler))
+	go http.ListenAndServe(c.listenPort, http.HandlerFunc(handler))
 
 	/*go http.HandleFunc("/"+c.path, handler)
 	if err := http.ListenAndServe(c.listenPort, nil); err != nil {
