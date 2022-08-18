@@ -53,9 +53,8 @@ func (c *Client) Update() (chan Update, error) {
 		return nil,er.Log("cant send msg", err)
 	}
 
-	updates := make(chan Update, 100)
+	updates := make(chan Update)
 
-	//var res Update
 	handler := func(w http.ResponseWriter, r *http.Request) {
 
 		//res := &Update{}
@@ -67,7 +66,7 @@ func (c *Client) Update() (chan Update, error) {
 			log.Fatal(err)
 			return
 		}
-		log.Printf(string(body))
+		//log.Printf(string(body))
 		log.Printf("method of handler WH: %s", r.Method)
 		if err := json.Unmarshal(body, &res); err != nil {
 			log.Fatal(err)
@@ -77,18 +76,13 @@ func (c *Client) Update() (chan Update, error) {
 		updates <- res
 		//defer close(updates)
 		for uu := range updates {
+			log.Print("rangin updates")
 			log.Print(uu)
 		}
 		
 		log.Printf(res.Msg.Text)
 		
 	}
-	
-	/*l, err := net.Listen("tcp", c.listenPort)
-	if err != nil {
-		return nil, err
-	}
-	go http.Serve(l, http.HandlerFunc(handler))*/
 
 	go http.ListenAndServe(c.listenPort, http.HandlerFunc(handler))
 
