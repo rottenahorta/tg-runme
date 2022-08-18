@@ -38,11 +38,12 @@ func (p *Processor) Fetch() (events.Event, error) {
 	/*if len(updates) == 0 {
 		return nil, nil
 	}*/
+	res := &events.Event{}
 
-	//for {
+	for {
 	select {
 	case u := <-upd:
-		res := events.Event{
+		*res = events.Event{
 			Text: func() string {
 				if u.Msg == nil {
 					return ""
@@ -66,8 +67,10 @@ func (p *Processor) Fetch() (events.Event, error) {
 			}(),
 		}
 		log.Print(res)
-		return res, nil
+		return *res, nil
 	}
+	}
+	log.Print("after for loop readin chan in Fetch() "+res.Text)
 	//}
 
 	//res := make([]events.Event, 0, len(updates))

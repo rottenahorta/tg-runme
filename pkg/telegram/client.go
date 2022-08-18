@@ -76,6 +76,7 @@ func (c *Client) Update() (Updates, error) {
 		}
 
 		updates <- res
+		defer close(updates)
 		
 		log.Printf(res.Msg.Text)
 		
