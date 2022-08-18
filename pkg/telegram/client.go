@@ -32,7 +32,6 @@ func NewClient(h, t, lp string) *Client {
 		listenPort: lp}
 }
 
-//type Updates <-chan Update
 func (c *Client) Update() (chan Update, error) {
 	/*q := url.Values{} // addin params
 	q.Add("offset", strconv.Itoa(o))
