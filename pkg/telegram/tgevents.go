@@ -34,35 +34,35 @@ func (p *Processor) Fetch() (events.Event, error) {
 	}
 
 	for {
-	select {
-	case u := <-ch:
-		res := events.Event{
-		Text: func() string {
-			if u.Msg == nil {
-				return ""
+		select {
+		case u := <-ch:
+			res := events.Event{
+			Text: func() string {
+				if u.Msg == nil {
+					return ""
+				}
+				return u.Msg.Text
+			}(),
+			Type: func() events.Type {
+				if u.Msg == nil {
+					return events.Unknown
+				}
+				return events.Message
+			}(),
+			Meta: func() Meta {
+				if u.Msg == nil {
+					return Meta{}
+				}
+				return Meta{
+					Chatid: u.Msg.Chat.Id,
+					Uname:  u.Msg.From.Uname,
+				}
+			}(),
 			}
-			return u.Msg.Text
-		}(),
-		Type: func() events.Type {
-			if u.Msg == nil {
-				return events.Unknown
-			}
-			return events.Message
-		}(),
-		Meta: func() Meta {
-			if u.Msg == nil {
-				return Meta{}
-			}
-			return Meta{
-				Chatid: u.Msg.Chat.Id,
-				Uname:  u.Msg.From.Uname,
-			}
-		}(),
+			p.Process(res)
+			log.Print("inside case for infinite loop %w",res)
+			return res, nil
 		}
-	p.Process(res)
-	log.Print("inside case for infinite loop %w",res)
-	return res, nil
-	}
 	}
 	//}
 	//log.Print("after for loop readin chan in Fetch() "+res.Text)
