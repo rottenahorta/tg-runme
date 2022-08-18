@@ -42,12 +42,12 @@ func (b *Bot) Start() error {
 			return err
 			//continue
 		}
-		log.Print(ev)
+		/*log.Print(ev)
 		if err := b.processor.Process(ev); err != nil {
 			er.Log("bot error processing event", err)
 			return err
 		//	continue
-		}
+		}*/
 		//}
 		//return nil
 	}
