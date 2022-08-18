@@ -36,7 +36,7 @@ func (b *Bot) Start() error {
 			time.Sleep(time.Second)
 			continue
 		}
-		log.Print(ev)
+		log.Printf("inside start() after fetch(): %v",ev)
 		if err != nil {
 			er.Log("bot error fetching event", err)
 			return err

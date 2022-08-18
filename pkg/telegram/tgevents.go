@@ -25,7 +25,7 @@ func NewProcessor(c *Client) *Processor { //, r repo.Repo) *Processor {
 }
 
 func (p *Processor) Fetch() (events.Event, error) {
-	ch := make(UpdatesChan)
+	ch := make(UpdatesChan, 100)
 	go p.tg.Update(ch)
 	//upd, err := p.tg.Update()
 
