@@ -77,10 +77,10 @@ func (c *Client) Update() (chan Update, error) {
 
 		updates <- res
 		//defer close(updates)
-		for uu := range updates {
+		/*for uu := range updates {
 			log.Print("rangin updates")
 			log.Print(uu)
-		}
+		}*/
 		
 		log.Printf(res.Msg.Text)
 		
