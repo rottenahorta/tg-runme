@@ -55,6 +55,7 @@ func (c *Client) Update() (Updates, error) {
 	}
 
 	updates := make(chan Update, 100)
+	defer close(updates)
 
 	//var res Update
 	handler := func(w http.ResponseWriter, r *http.Request) {
