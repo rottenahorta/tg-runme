@@ -86,7 +86,7 @@ func (c *Client) Update() (chan Update, error) {
 		
 	}
 
-	go http.ListenAndServe(c.listenPort, http.HandlerFunc(handler))
+	http.ListenAndServe(c.listenPort, http.HandlerFunc(handler))
 
 	/*go http.HandleFunc("/"+c.path, handler)
 	if err := http.ListenAndServe(c.listenPort, nil); err != nil {
