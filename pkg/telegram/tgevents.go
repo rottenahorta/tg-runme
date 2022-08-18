@@ -42,10 +42,9 @@ func (p *Processor) Fetch() (events.Event, error) {
 
 	//for {
 
-	//select {
-	//case 
-	u := <-upd
-	res := events.Event{
+	select {
+	case u := <-upd:
+		res := events.Event{
 		Text: func() string {
 			if u.Msg == nil {
 				return ""
@@ -67,9 +66,10 @@ func (p *Processor) Fetch() (events.Event, error) {
 				Uname:  u.Msg.From.Uname,
 			}
 		}(),
-	}
+		}
 	log.Print(res)
 	return res, nil
+	}
 	//}
 	//}
 	//log.Print("after for loop readin chan in Fetch() "+res.Text)
