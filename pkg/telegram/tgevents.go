@@ -41,6 +41,7 @@ func (p *Processor) Fetch() (events.Event, error) {
 	//res := &events.Event{}
 
 	//for {
+
 	select {
 	case u := <-upd:
 		res := events.Event{
