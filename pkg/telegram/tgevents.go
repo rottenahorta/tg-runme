@@ -30,7 +30,7 @@ func (p *Processor) Fetch() (events.Event, error) {
 	//upd, err := p.tg.Update()
 
 	for uu := range ch {
-		log.Printf("%+v\n", uu)
+		log.Printf("ranginupdates %+v\n", uu)
 	}
 
 	for {
@@ -60,7 +60,7 @@ func (p *Processor) Fetch() (events.Event, error) {
 		}(),
 		}
 	p.Process(res)
-	log.Print(res)
+	log.Print("inside case for infinite loop %w",res)
 	return res, nil
 	}
 	}
