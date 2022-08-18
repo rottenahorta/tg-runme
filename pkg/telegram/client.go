@@ -82,7 +82,7 @@ func (c *Client) Update(ch UpdatesChan) (){//UpdatesChan, error) {
 			log.Print(uu)
 		}*/
 		
-		log.Printf(res.Msg.Text)
+		log.Printf("inside handler: " + res.Msg.Text)
 		
 	}
 
