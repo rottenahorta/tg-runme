@@ -43,6 +43,6 @@ func (b *Bot) Start() error {
 		//	continue
 		}
 		//}
-		return nil
+		//return nil
 	}
 }
