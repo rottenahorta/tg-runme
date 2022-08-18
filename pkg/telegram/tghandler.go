@@ -2,14 +2,15 @@ package tg
 
 import "log"
 
-func (p *Processor) doCmd(msg, uname string, chatId int) error {
+func (c *Client) doCmd(msg, uname string, chatId int) error {
 	log.Printf("recieved: %s\nfrom: %s", msg, uname)
 	switch msg {
-	case "/start": return p.cmdStart(uname, chatId)
-	default: return p.tg.Send(chatId, "Я ничего не понимаю")
+	case "/start": return c.cmdStart(uname, chatId)
+	default: return c.Send(chatId, "Я ничего не понимаю")
 	}
 }
 
-func (p *Processor) cmdStart (uname string, chatId int) error{
-	return p.tg.Send(chatId, msgStart+uname+"\n"+msgHello)
+//func (p *Processor) 
+func (c *Client) cmdStart (uname string, chatId int) error{
+	return c.Send(chatId, msgStart+uname+"\n"+msgHello)
 }

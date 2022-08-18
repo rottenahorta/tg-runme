@@ -11,7 +11,7 @@ import (
 )
 
 type Processor struct {
-	tg *Client
+	//tg *Client
 	//repo repo.Repo
 }
 
@@ -20,13 +20,14 @@ type Meta struct {
 	Uname  string
 }
 
-func NewProcessor(c *Client) *Processor { //, r repo.Repo) *Processor {
+/*func NewProcessor(c *Client) *Processor { //, r repo.Repo) *Processor {
 	return &Processor{tg: c} //,repo:r}
-}
+}*/
 
-func (p *Processor) Fetch() (events.Event, error) {
-	ch := make(UpdatesChan, 100)
-	go p.tg.Update(ch)
+//func (p *Processor)
+func (c *Client) Fetch(u Update) (events.Event, error) {
+	//ch := make(UpdatesChan, 100)
+	//go p.tg.Update(ch)
 	//upd, err := p.tg.Update()
 
 	/*for uu := range ch {
@@ -35,35 +36,35 @@ func (p *Processor) Fetch() (events.Event, error) {
 
 	//for {
 	//	log.Print("inside for infinite loop outside select %w",ch)
-	select {
-	case u := <-ch:
-		res := events.Event{
-		Text: func() string {
-			if u.Msg == nil {
-				return ""
-			}
-			return u.Msg.Text
-		}(),
-		Type: func() events.Type {
-			if u.Msg == nil {
-				return events.Unknown
-			}
-			return events.Message
-		}(),
-		Meta: func() Meta {
-			if u.Msg == nil {
-				return Meta{}
-			}
-			return Meta{
-				Chatid: u.Msg.Chat.Id,
-				Uname:  u.Msg.From.Uname,
-			}
-		}(),
+	//select {
+	//case u := <-ch:
+	res := events.Event{
+	Text: func() string {
+		if u.Msg == nil {
+			return ""
 		}
-		p.Process(res)
-		log.Print("inside case for infinite loop %w",res)
-		return res, nil
+		return u.Msg.Text
+	}(),
+	Type: func() events.Type {
+		if u.Msg == nil {
+			return events.Unknown
+		}
+		return events.Message
+	}(),
+	Meta: func() Meta {
+		if u.Msg == nil {
+			return Meta{}
+		}
+		return Meta{
+			Chatid: u.Msg.Chat.Id,
+			Uname:  u.Msg.From.Uname,
+		}
+	}(),
 	}
+	c.Process(res)
+	log.Print("inside case for infinite loop %w",res)
+	return res, nil
+	//}
 	//}
 	//}
 	//log.Print("after for loop readin chan in Fetch() "+res.Text)
@@ -100,17 +101,19 @@ func (p *Processor) Fetch() (events.Event, error) {
 	//return res, nil
 }
 
-func (p *Processor) Process(ev events.Event) error {
+//func (p *Processor) 
+func (c *Client) Process(ev events.Event) error {
 	log.Print("inside Process()")
 	switch ev.Type {
 	case events.Message:
-		return p.processMsg(ev)
+		return c.processMsg(ev)
 	default:
 		return er.Log("cant process unknown tg event", errors.New("unknown tg type"))
 	}
 }
 
-func (p *Processor) processMsg(ev events.Event) error {
+//func (p *Processor) 
+func (c *Client) processMsg(ev events.Event) error {
 	meta, err := func() (Meta, error) {
 		m, ok := ev.Meta.(Meta)
 		if !ok {
@@ -121,7 +124,7 @@ func (p *Processor) processMsg(ev events.Event) error {
 	if err != nil {
 		er.Log("cant processMsg tg event", err)
 	}
-	if err := p.doCmd(ev.Text, meta.Uname, meta.Chatid); err != nil {
+	if err := c.doCmd(ev.Text, meta.Uname, meta.Chatid); err != nil {
 		return er.Log("cant processMsg tg event", err)
 	}
 	return nil

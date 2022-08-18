@@ -17,6 +17,7 @@ import (
 
 type Client struct {
 	client http.Client
+	//processor *Processor
 	host   string
 	path   string
 	listenPort string
@@ -33,7 +34,7 @@ func NewClient(h, t, lp string) *Client {
 }
 
 type UpdatesChan chan Update
-func (c *Client) Update(ch UpdatesChan) (){//UpdatesChan, error) {
+func (c *Client) Update() (){//UpdatesChan, error) {
 	/*q := url.Values{} // addin params
 	q.Add("offset", strconv.Itoa(o))
 	q.Add("limit", strconv.Itoa(l))
@@ -75,7 +76,10 @@ func (c *Client) Update(ch UpdatesChan) (){//UpdatesChan, error) {
 			return
 		}
 
-		ch <- res
+		c.Fetch(res)
+		//ch <- res
+
+		
 		//defer close(updates)
 		/*for uu := range updates {
 			log.Print("rangin updates")
