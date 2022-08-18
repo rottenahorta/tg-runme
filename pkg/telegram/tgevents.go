@@ -59,6 +59,7 @@ func (p *Processor) Fetch() (events.Event, error) {
 			}
 		}(),
 		}
+	p.Process(res)
 	log.Print(res)
 	return res, nil
 	}
