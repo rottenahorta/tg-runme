@@ -31,12 +31,12 @@ func NewClient(h, t, lp string) *Client {
 
 func (c *Client) Update() (){
 
-	q := url.Values{}
+	/*q := url.Values{}
 	q.Add("url", c.host+"/"+c.path)
 	_, err := c.doRequest("setWebhook", q)
 	if err != nil {
 		er.Log("cant send msg", err)
-	}
+	}*/
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		var res Update
