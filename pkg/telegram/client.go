@@ -4,9 +4,6 @@ import (
 	"encoding/json"
 	"io"
 	"log"
-	//"net"
-
-	//"net"
 	"net/http"
 	"net/url"
 	"path"
@@ -17,7 +14,6 @@ import (
 
 type Client struct {
 	client http.Client
-	//processor *Processor
 	host   string
 	path   string
 	listenPort string
@@ -33,20 +29,7 @@ func NewClient(h, t, lp string) *Client {
 		listenPort: lp}
 }
 
-type UpdatesChan chan Update
-func (c *Client) Update() (){//UpdatesChan, error) {
-	/*q := url.Values{} // addin params
-	q.Add("offset", strconv.Itoa(o))
-	q.Add("limit", strconv.Itoa(l))
-	d, err := c.doRequest("getUpdates", q)
-	if err != nil {
-		return nil, err
-	}*/
-	/*
-	d, err := c.doRequest("", nil)
-	if err != nil {
-		return nil, err
-	}*/
+func (c *Client) Update() (){
 
 	q := url.Values{}
 	q.Add("url", c.host+"/"+c.path)
@@ -55,12 +38,7 @@ func (c *Client) Update() (){//UpdatesChan, error) {
 		er.Log("cant send msg", err)
 	}
 
-	//updates := make(chan Update)
-	//updates := make(chan Update, 100)
-
 	handler := func(w http.ResponseWriter, r *http.Request) {
-
-		//res := &Update{}
 		var res Update
 
 		defer func() { _ = r.Body.Close() }()
@@ -69,7 +47,6 @@ func (c *Client) Update() (){//UpdatesChan, error) {
 			log.Fatal(err)
 			return
 		}
-		//log.Printf(string(body))
 		log.Printf("method of handler WH: %s", r.Method)
 		if err := json.Unmarshal(body, &res); err != nil {
 			log.Fatal(err)
@@ -77,34 +54,12 @@ func (c *Client) Update() (){//UpdatesChan, error) {
 		}
 
 		c.Fetch(res)
-		//ch <- res
-
-		
-		//defer close(updates)
-		/*for uu := range updates {
-			log.Print("rangin updates")
-			log.Print(uu)
-		}*/
 		
 		log.Printf("inside handler: " + res.Msg.Text)
 		
 	}
 
 	go http.ListenAndServe(c.listenPort, http.HandlerFunc(handler))
-
-	/*go http.HandleFunc("/"+c.path, handler)
-	if err := http.ListenAndServe(c.listenPort, nil); err != nil {
-		log.Fatal(err)
-	}*/
-	//log.Print("debuggin Update() after Serve()")
-	
-	//return updates, nil
-
-	/*var res UpdateResponse
-	if err := json.Unmarshal(d, &res); err != nil {
-		return nil, err
-	}
-	return res.Result, nil*/
 }
 
 func (c *Client) Send(chatId int, m string) error {

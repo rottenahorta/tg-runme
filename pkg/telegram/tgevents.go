@@ -10,69 +10,13 @@ import (
 	//"github.com/rottenahorta/tgbotsche/pkg/repo"
 )
 
-type Processor struct {
-	//tg *Client
-	//repo repo.Repo
-}
-
 type Meta struct {
 	Chatid int
 	Uname  string
 }
 
-/*func NewProcessor(c *Client) *Processor { //, r repo.Repo) *Processor {
-	return &Processor{tg: c} //,repo:r}
-}*/
-
-//func (p *Processor)
 func (c *Client) Fetch(u Update) (events.Event, error) {
-	//ch := make(UpdatesChan, 100)
-	//go p.tg.Update(ch)
-	//upd, err := p.tg.Update()
-
-	/*for uu := range ch {
-		log.Printf("ranginupdates %+v\n", uu)
-	}*/
-
-	//for {
-	//	log.Print("inside for infinite loop outside select %w",ch)
-	//select {
-	//case u := <-ch:
 	res := events.Event{
-	Text: func() string {
-		if u.Msg == nil {
-			return ""
-		}
-		return u.Msg.Text
-	}(),
-	Type: func() events.Type {
-		if u.Msg == nil {
-			return events.Unknown
-		}
-		return events.Message
-	}(),
-	Meta: func() Meta {
-		if u.Msg == nil {
-			return Meta{}
-		}
-		return Meta{
-			Chatid: u.Msg.Chat.Id,
-			Uname:  u.Msg.From.Uname,
-		}
-	}(),
-	}
-	c.Process(res)
-	log.Print("inside case for infinite loop %w",res)
-	return res, nil
-	//}
-	//}
-	//}
-	//log.Print("after for loop readin chan in Fetch() "+res.Text)
-	//}
-
-	//res := make([]events.Event, 0, len(updates))
-	//for _, u := range updates {
-	/*res := append(res, events.Event{
 		Text: func() string {
 			if u.Msg == nil {
 				return ""
@@ -94,14 +38,12 @@ func (c *Client) Fetch(u Update) (events.Event, error) {
 				Uname:  u.Msg.From.Uname,
 			}
 		}(),
-	}*/
-	//)
-	//}
-	//p.offset = updates[len(updates)-1].Id + 1
-	//return res, nil
+	}
+	c.Process(res)
+	log.Print("inside case for infinite loop %w",res)
+	return res, nil
 }
 
-//func (p *Processor) 
 func (c *Client) Process(ev events.Event) error {
 	log.Print("inside Process()")
 	switch ev.Type {
@@ -112,7 +54,6 @@ func (c *Client) Process(ev events.Event) error {
 	}
 }
 
-//func (p *Processor) 
 func (c *Client) processMsg(ev events.Event) error {
 	meta, err := func() (Meta, error) {
 		m, ok := ev.Meta.(Meta)

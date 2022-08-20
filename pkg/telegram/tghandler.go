@@ -10,7 +10,6 @@ func (c *Client) doCmd(msg, uname string, chatId int) error {
 	}
 }
 
-//func (p *Processor) 
 func (c *Client) cmdStart (uname string, chatId int) error{
 	return c.Send(chatId, msgStart+uname+"\n"+msgHello)
 }
