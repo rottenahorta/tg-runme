@@ -45,7 +45,6 @@ func (c *Client) Fetch(u Update) (events.Event, error) {
 }
 
 func (c *Client) Process(ev events.Event) error {
-	log.Print("inside Process()")
 	switch ev.Type {
 	case events.Message:
 		return c.processMsg(ev)
