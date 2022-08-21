@@ -9,5 +9,5 @@ type Data struct {
 }
 
 type Summary struct {
-	Distance int `json:"dis"` 
+	Distance string `json:"dis"` 
 }
