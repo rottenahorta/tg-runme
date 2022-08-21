@@ -70,6 +70,7 @@ func (c *Client) GetZeppData() (zp.Update, error) {
 	if err != nil {
 		return  zp.Update{}, er.Log("cant get zepp data", err)
 	}
+	log.Printf("zepp trq body: %v", b)
 	if err := json.Unmarshal(b, &res); err != nil {
 		return  zp.Update{}, er.Log("cant unmarshal zepp data", err)
 	}
@@ -88,7 +89,6 @@ func (c *Client) doRequest(method, host, headerName, headerValue string, q url.V
 				return "v1/sport/run/history.json"
 			}}(),
 	}
-	log.Print(u.String())
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err
