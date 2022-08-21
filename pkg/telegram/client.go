@@ -88,6 +88,7 @@ func (c *Client) doRequest(method, host, headerName, headerValue string, q url.V
 				return ""
 			}}(),
 	}
+	log.Print(u.String())
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err
