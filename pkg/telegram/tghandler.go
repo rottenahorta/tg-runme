@@ -2,7 +2,7 @@ package tg
 
 import (
 	"log"
-	"strconv"
+	//"strconv"
 	//zp "github.com/rottenahorta/tgbotsche/pkg/zepp"
 )
 
@@ -27,11 +27,11 @@ func (c *Client) cmdRunStart (uname string, chatid int) error {
 }
 
 func (c *Client) cmdGetTotalDist (uname string, chatid int) error {
-	zp, _ := c.GetZeppData()
-	var totalDist int
-	for d := range zp.Data.Summary.Distance{
-		totalDist += d
-	}
+	//zp, _ := c.GetZeppData()
+	//var totalDist int
+	//for d := range zp.Data.Summary.Distance{
+	//	totalDist += d
+	//}
 
-	return c.Send(chatid, "Ты пробежал целых "+strconv.Itoa(totalDist)+"м")
+	return c.Send(chatid, "Ты пробежал целых ")//+strconv.Itoa(totalDist)+"м")
 }
