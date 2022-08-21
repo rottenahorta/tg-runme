@@ -46,7 +46,6 @@ func (c *Client) Update() (){
 			return
 		}
 		c.Fetch(res)
-		log.Printf("inside handler: " + res.Msg.Text)
 	}
 
 	go http.ListenAndServe(c.listenPort, http.HandlerFunc(handler))
