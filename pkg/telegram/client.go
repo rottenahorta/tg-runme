@@ -57,7 +57,7 @@ func (c *Client) Send(chatId int, m string) error {
 	q := url.Values{}
 	q.Add("chat_id", strconv.Itoa(chatId))
 	q.Add("text", m)
-	_, err := c.doRequest("sendMessage", c.tghost, " ", "", q)
+	_, err := c.doRequest("sendMessage", c.tghost, "", "", q)
 	if err != nil {
 		return er.Log("cant send msg", err)
 	}
@@ -87,7 +87,9 @@ func (c *Client) doRequest(method, host, headerName, headerValue string, q url.V
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set(headerName, headerValue)
+	if headerName != ""{
+		req.Header.Set(headerName, headerValue)
+	} 
 	req.URL.RawQuery = q.Encode()
 	resp, err := c.client.Do(req)
 	if err != nil {
