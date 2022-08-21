@@ -53,6 +53,6 @@ func (c *Client) cmdGetLastRun (uname string, chatid int) error {
 	t, _ := strconv.Atoi(zp.Data.Summary[0].Runtime) 
 	p, _ := strconv.ParseFloat(zp.Data.Summary[0].AvgPace, 64)
 	return c.Send(chatid, "Последняя пробежка была целых "+zp.Data.Summary[0].Distance+
-				"м.\nТы ее завершил за "+strconv.Itoa(t/60)+":"+strconv.Itoa(t%60)+
-				"\nСредний темп "+strconv.Itoa(int(p*100)/60)+":"+strconv.Itoa(int(p*100)%60))
+				"м\nТы ее завершил за "+strconv.Itoa(t/60)+":"+strconv.Itoa(t%60)+
+				"\nСредний темп "+strconv.Itoa(int(p*1000)/60)+":"+strconv.Itoa(int(p*1000)%60))
 }
