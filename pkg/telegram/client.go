@@ -6,10 +6,12 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"path"
 	"strconv"
 
 	er "github.com/rottenahorta/tgbotsche/pkg/int"
+	zp "github.com/rottenahorta/tgbotsche/pkg/zepp"
 )
 
 type Client struct {
@@ -55,24 +57,37 @@ func (c *Client) Send(chatId int, m string) error {
 	q := url.Values{}
 	q.Add("chat_id", strconv.Itoa(chatId))
 	q.Add("text", m)
-	_, err := c.doRequest("sendMessage", q)
+	_, err := c.doRequest("sendMessage", c.tghost, "", "", q)
 	if err != nil {
 		return er.Log("cant send msg", err)
 	}
 	return nil
 }
 
-func (c *Client) doRequest(method string, q url.Values) (d []byte, err error) {
+func (c *Client) GetZeppData() (zp.Update, error) {
+	var res zp.Update
+	b, err := c.doRequest("", "https://api-mifit-de2.huami.com/v1/sport/run/history.json", "apptoken", os.Getenv("ZPTOKEN"), nil)
+	if err != nil {
+		return  zp.Update{}, er.Log("cant get zepp data", err)
+	}
+	if err := json.Unmarshal(b, &res); err != nil {
+		return  zp.Update{}, er.Log("cant unmarshal zepp data", err)
+	}
+	return res, nil
+}
+
+func (c *Client) doRequest(method, host, headerName, headerValue string, q url.Values) (d []byte, err error) {
 	defer func() { err = er.Log("cant do req", err) }()
 	u := url.URL{
 		Scheme: "https",
-		Host:   c.tghost,
+		Host:   host,
 		Path:   path.Join(c.path, method),
 	}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err
 	}
+	req.Header.Set(headerName, headerValue)
 	req.URL.RawQuery = q.Encode()
 	resp, err := c.client.Do(req)
 	if err != nil {

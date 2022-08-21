@@ -2,7 +2,6 @@ package tg
 
 import (
 	"errors"
-	"log"
 	//"log"
 
 	"github.com/rottenahorta/tgbotsche/pkg/events"
@@ -40,7 +39,6 @@ func (c *Client) Fetch(u Update) (events.Event, error) {
 		}(),
 	}
 	c.Process(res)
-	log.Print("inside case for infinite loop %w",res)
 	return res, nil
 }
 
