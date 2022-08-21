@@ -69,10 +69,10 @@ func (c *Client) GetZeppData() (zp.Update, error) {
 	if err != nil {
 		return  zp.Update{}, er.Log("cant get zepp data", err)
 	}
-	//log.Printf("zepp req body: %v", string(b))
 	if err := json.Unmarshal(b, &res); err != nil {
 		return  zp.Update{}, er.Log("cant unmarshal zepp data", err)
 	}
+	log.Printf("zepp req summary: %v", res.Data.Summary)
 	return res, nil
 }
 

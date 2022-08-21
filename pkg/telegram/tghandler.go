@@ -29,7 +29,7 @@ func (c *Client) cmdRunStart (uname string, chatid int) error {
 func (c *Client) cmdGetTotalDist (uname string, chatid int) error {
 	zp, _ := c.GetZeppData()
 	var totalDist int
-	for d := range zp.Data.Summary{
+	for d := range zp.Data.Summary.Distance{
 		totalDist += d
 	}
 
