@@ -66,7 +66,7 @@ func (c *Client) Send(chatId int, m string) error {
 
 func (c *Client) GetZeppData() (zp.Update, error) {
 	var res zp.Update
-	b, err := c.doRequest("", "api-mifit-de2.huami.com/v1/sport/run/history.json", "apptoken", os.Getenv("ZPTOKEN"), nil)
+	b, err := c.doRequest("", "api-mifit-de2.huami.com", "apptoken", os.Getenv("ZPTOKEN"), nil)
 	if err != nil {
 		return  zp.Update{}, er.Log("cant get zepp data", err)
 	}
@@ -85,7 +85,7 @@ func (c *Client) doRequest(method, host, headerName, headerValue string, q url.V
 			if headerName == "" {
 				return path.Join(c.path, method) 
 			} else {
-				return ""
+				return "v1/sport/run/history.json"
 			}}(),
 	}
 	log.Print(u.String())
