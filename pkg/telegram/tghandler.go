@@ -33,5 +33,5 @@ func (c *Client) cmdGetTotalDist (uname string, chatid int) error {
 		totalDist += d
 	}
 
-	return c.Send(chatid, "Ты пробежал целых :"+strconv.Itoa(totalDist)+"м")
+	return c.Send(chatid, "Ты пробежал целых "+strconv.Itoa(totalDist)+"м")
 }

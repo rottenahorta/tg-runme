@@ -81,7 +81,12 @@ func (c *Client) doRequest(method, host, headerName, headerValue string, q url.V
 	u := url.URL{
 		Scheme: "https",
 		Host:   host,
-		Path:   path.Join(c.path, method),
+		Path:   func() string {
+			if headerName == "" {
+				return path.Join(c.path, method) 
+			} else {
+				return ""
+			}}(),
 	}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
