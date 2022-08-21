@@ -33,7 +33,7 @@ func (c *Client) cmdGetTotalDist (uname string, chatid int) error {
 	for d := range zp.Data.Summary{
 		//log.Printf("dis: %s", zp.Data.Summary[d])
 		n, _ := strconv.Atoi(zp.Data.Summary[d].Distance)
-		log.Print(n)
+		log.Print(zp.Data.Summary[d].Distance)
 		totalDist += n
 	}
 
