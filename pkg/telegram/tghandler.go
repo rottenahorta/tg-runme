@@ -13,6 +13,7 @@ func (c *Client) doCmd(msg, uname string, chatId int) error {
 	case "/start": return c.cmdStart(uname, chatId)
 	case "/run": return c.cmdRunStart(uname, chatId)
 	case "/total": return c.cmdGetTotalDist(uname, chatId)
+	case "/last": return c.cmdGetLastRun(uname, chatId)
 	default: return c.Send(chatId, "Я ничего не понимаю")
 	}
 }
@@ -32,11 +33,26 @@ func (c *Client) cmdGetTotalDist (uname string, chatid int) error {
 
 	var totalDist int
 	for d := range zp.Data.Summary{
-		//log.Printf("dis: %s", zp.Data.Summary[d])
 		n, _ := strconv.ParseFloat(zp.Data.Summary[d].Distance, 64)
-		log.Print(int(n))
 		totalDist += int(n)
 	}
 
 	return c.Send(chatid, "Ты пробежал целых "+strconv.Itoa(totalDist)+"м")
+}
+
+func (c *Client) cmdGetLastRun (uname string, chatid int) error {
+	zp, _ := c.GetZeppData()
+
+
+	var totalDist int
+	for d := range zp.Data.Summary{
+		n, _ := strconv.ParseFloat(zp.Data.Summary[d].Distance, 64)
+		totalDist += int(n)
+	}
+
+	t, _ := strconv.Atoi(zp.Data.Summary[0].Runtime) 
+	p, _ := strconv.ParseFloat(zp.Data.Summary[0].AvgPace, 64)
+	return c.Send(chatid, "Последняя пробежка была целых "+zp.Data.Summary[0].Distance+
+				"м.\nТы ее завершил за "+strconv.Itoa(t/60)+":"+strconv.Itoa(t%60)+
+				"\nСредний темп "+strconv.Itoa(int(p*100)/60)+":"+strconv.Itoa(int(p*100)%60))
 }

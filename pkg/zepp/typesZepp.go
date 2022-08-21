@@ -10,4 +10,6 @@ type Data struct {
 
 type Summary struct {
 	Distance string `json:"dis"` 
+	Runtime string `json:"run_time"` 
+	AvgPace string `json:"avg_pace"` 
 }
