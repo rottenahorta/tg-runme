@@ -31,8 +31,9 @@ func (c *Client) cmdGetTotalDist (uname string, chatid int) error {
 
 	var totalDist int
 	for d := range zp.Data.Summary{
-		log.Printf("dis: %s", zp.Data.Summary[d])
-		//totalDist, _= strconv.Atoi(zp.Data.Summary[d])
+		//log.Printf("dis: %s", zp.Data.Summary[d])
+		n, _ := strconv.Atoi(zp.Data.Summary[d].Distance)
+		totalDist += n
 	}
 
 	return c.Send(chatid, "Ты пробежал целых "+strconv.Itoa(totalDist)+"м")
