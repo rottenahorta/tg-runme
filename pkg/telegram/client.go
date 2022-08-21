@@ -57,7 +57,7 @@ func (c *Client) Send(chatId int, m string) error {
 	q := url.Values{}
 	q.Add("chat_id", strconv.Itoa(chatId))
 	q.Add("text", m)
-	_, err := c.doRequest("sendMessage", c.tghost, "", "", q)
+	_, err := c.doRequest("sendMessage", c.tghost, " ", "", q)
 	if err != nil {
 		return er.Log("cant send msg", err)
 	}
