@@ -64,7 +64,7 @@ func (c *Client) Send(chatId int, m string) error {
 
 func (c *Client) GetZeppData() (zp.Update, error) {
 	var res zp.Update
-	b, err := c.doRequest("", "api-mifit-de2.huami.com", "apptoken", os.Getenv("ZPTOKEN"), nil)
+	b, err := c.doRequest("", "api-mifit-de2.huami.com", "apptoken", os.Getenv("HUAMITOKEN"), nil)
 	if err != nil {
 		return  zp.Update{}, er.Log("cant get zepp data", err)
 	}
