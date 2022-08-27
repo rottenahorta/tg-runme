@@ -15,23 +15,23 @@ import (
 )
 
 type Client struct {
-	client http.Client
-	host   string
-	path   string
+	client     http.Client
+	host       string
+	path       string
 	listenPort string
-	tghost string
+	tghost     string
 }
 
 func NewClient(h, t, lp string) *Client {
 	return &Client{
-		client: http.Client{},
-		path:   makePath(t),
-		host:   h,
-		tghost: "api.telegram.org",
+		client:     http.Client{},
+		path:       makePath(t),
+		host:       h,
+		tghost:     "api.telegram.org",
 		listenPort: lp}
 }
 
-func (c *Client) Update() (){
+func (c *Client) Update() {
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		var res Update
 
@@ -64,12 +64,12 @@ func (c *Client) Send(chatId int, m string) error {
 
 func (c *Client) GetZeppData() (zp.Update, error) {
 	var res zp.Update
-	b, err := c.doRequest("", "api-mifit-de2.huami.com", "apptoken", os.Getenv("HUAMITOKEN"), nil)
+	b, err := c.doRequest("", "api-mifit-de2.huami.com", "apptoken", os.Getenv("ZPTOKEN"), nil)
 	if err != nil {
-		return  zp.Update{}, er.Log("cant get zepp data", err)
+		return zp.Update{}, er.Log("cant get zepp data", err)
 	}
 	if err := json.Unmarshal(b, &res); err != nil {
-		return  zp.Update{}, er.Log("cant unmarshal zepp data", err)
+		return zp.Update{}, er.Log("cant unmarshal zepp data", err)
 	}
 	log.Printf("zepp req summary: %v", res.Data.Summary)
 	return res, nil
@@ -80,20 +80,21 @@ func (c *Client) doRequest(method, host, headerName, headerValue string, q url.V
 	u := url.URL{
 		Scheme: "https",
 		Host:   host,
-		Path:   func() string {
+		Path: func() string {
 			if headerName == "" {
-				return path.Join(c.path, method) 
+				return path.Join(c.path, method)
 			} else {
 				return "v1/sport/run/history.json"
-			}}(),
+			}
+		}(),
 	}
 	req, err := http.NewRequest("GET", u.String(), nil)
 	if err != nil {
 		return nil, err
 	}
-	if headerName != ""{
+	if headerName != "" {
 		req.Header.Set(headerName, headerValue)
-	} 
+	}
 	req.URL.RawQuery = q.Encode()
 	resp, err := c.client.Do(req)
 	if err != nil {
