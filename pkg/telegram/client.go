@@ -1,7 +1,6 @@
 package tg
 
 import (
-	//"bytes"
 	"encoding/json"
 	"io"
 	"log"
@@ -9,8 +8,6 @@ import (
 	"net/url"
 	"os"
 	"strings"
-
-	//"path"
 	"strconv"
 
 	er "github.com/rottenahorta/tgbotsche/pkg/int"
@@ -97,7 +94,6 @@ func (c *Client) GetZeppToken(code string) (string, error) {
 	if err := json.Unmarshal(b, &res); err != nil {
 		return "", er.Log("cant unmarshal zepp apptoken", err)
 	}
-	log.Printf("zepp apptoken: %s", res.TokenInfo.AppToken)
 	return res.TokenInfo.AppToken, nil
 }
 

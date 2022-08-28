@@ -22,7 +22,6 @@ func (c *Client) doCmd(msg, uname string, chatId int) error {
 	case "/run": return c.cmdRunStart(uname, chatId)
 	case "/total": return c.cmdGetTotalDist(uname, chatId)
 	case "/last": return c.cmdGetLastRun(uname, chatId)
-	//case "/token": return c.cmdTokenTest(uname, chatId)
 	default: return c.Send(chatId, "Я ничего не понимаю")
 	}
 }
@@ -70,8 +69,3 @@ func (c *Client) cmdGetLastRun (uname string, chatid int) error {
 																			return "0"+strconv.Itoa(t)
 																		}}())
 }
-
-/*func (c *Client) cmdAccessToken (url string) error{
-	log.Print(url)
-	return nil
-}*/
