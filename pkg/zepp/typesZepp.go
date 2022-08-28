@@ -13,3 +13,11 @@ type Summary struct {
 	Runtime string `json:"run_time"` 
 	AvgPace string `json:"avg_pace"` 
 }
+
+type ResponseToken struct {
+	TokenInfo TokenInfo `json:"token_info"` 
+}
+
+type TokenInfo struct {
+	AppToken string `json:"app_token"` 
+}
