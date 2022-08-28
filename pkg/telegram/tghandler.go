@@ -11,7 +11,7 @@ import (
 
 func (c *Client) doCmd(msg, uname string, chatId int) error {
 	log.Printf("recieved: %s\nfrom: %s", msg, uname)
-	if u, err := url.Parse(msg); err != nil {
+	if u, err := url.Parse(msg); err == nil {
 		if strings.Contains(u.Host, "api-mifit") {
 			log.Print(u.RawQuery)
 		}
