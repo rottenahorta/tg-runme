@@ -93,6 +93,7 @@ func (c *Client) GetZeppToken(code string) (string, error) {
 	if err != nil {
 		return "", er.Log("cant get zepp apptoken", err)
 	}
+	log.Print(b)
 	if err := json.Unmarshal(b, &res); err != nil {
 		return "", er.Log("cant unmarshal zepp apptoken", err)
 	}
