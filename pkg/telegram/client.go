@@ -56,8 +56,8 @@ func (c *Client) Update() {
 
 func (c *Client) Send(chatId int, m string) error {
 	q := url.Values{}
-	q.Add("chat_id", strconv.Itoa(chatId))
-	q.Add("text", m)
+	q.Set("chat_id", strconv.Itoa(chatId))
+	q.Set("text", m)
 	_, err := c.doRequest(c.tghost, c.botPath+"/sendMessage", "", "", "GET", q)
 	if err != nil {
 		return er.Log("cant send msg", err)
@@ -81,14 +81,14 @@ func (c *Client) GetZeppData() (zp.Update, error) {
 func (c *Client) GetZeppToken(code string) (string, error) {
 	var res zp.ResponseToken
 	q := url.Values{}
-	q.Add("code",code)
-	q.Add("grant_type","request_token")
-	q.Add("country_code","RU")
-	q.Add("device_id","w")
-	q.Add("third_name","xiaomi-hm-mifit")
-	q.Add("app_version","w")
-	q.Add("device_model","w")
-	q.Add("app_name","com.xiaomi.hm.health")
+	q.Set("code",code)
+	q.Set("grant_type","request_token")
+	q.Set("country_code","RU")
+	q.Set("device_id","w")
+	q.Set("third_name","xiaomi-hm-mifit")
+	q.Set("app_version","w")
+	q.Set("device_model","w")
+	q.Set("app_name","com.xiaomi.hm.health")
 	b, err := c.doRequest("account.huami.com", "v2/client/login", "", "", "POST", q)
 	if err != nil {
 		return "", er.Log("cant get zepp apptoken", err)
