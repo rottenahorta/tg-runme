@@ -3,17 +3,22 @@ package tg
 import (
 	//"fmt"
 	"log"
+	"net/url"
 	"strconv"
 	//zp "github.com/rottenahorta/tgbotsche/pkg/zepp"
 )
 
 func (c *Client) doCmd(msg, uname string, chatId int) error {
 	log.Printf("recieved: %s\nfrom: %s", msg, uname)
+	if u, err := url.Parse(msg); err != nil {
+		log.Print(u.Host)
+	}
 	switch msg {
 	case "/start": return c.cmdStart(uname, chatId)
 	case "/run": return c.cmdRunStart(uname, chatId)
 	case "/total": return c.cmdGetTotalDist(uname, chatId)
 	case "/last": return c.cmdGetLastRun(uname, chatId)
+	//case "/token": return c.cmdTokenTest(uname, chatId)
 	default: return c.Send(chatId, "Я ничего не понимаю")
 	}
 }
@@ -54,5 +59,15 @@ func (c *Client) cmdGetLastRun (uname string, chatid int) error {
 	p, _ := strconv.ParseFloat(zp.Data.Summary[0].AvgPace, 64)
 	return c.Send(chatid, "Последняя пробежка была целых "+zp.Data.Summary[0].Distance+
 				"м\nТы ее завершил за "+strconv.Itoa(t/60)+":"+strconv.Itoa(t%60)+
-				"\nСредний темп "+strconv.Itoa(int(p*1000)/60)+":"+strconv.Itoa(int(p*1000)%60))
+				"\nСредний темп "+strconv.Itoa(int(p*1000)/60)+":"+func() string{
+																		if t:=int(p*1000)%60; t>9{
+																			return strconv.Itoa(t)
+																		}else {
+																			return "0"+strconv.Itoa(t)
+																		}}())
 }
+
+/*func (c *Client) cmdAccessToken (url string) error{
+	log.Print(url)
+	return nil
+}*/
