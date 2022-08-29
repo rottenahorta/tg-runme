@@ -19,5 +19,14 @@ func NewDBPostgres(path string) (*sqlx.DB) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	q, err := db.Prepare(initUsersDB)
+	defer q.Close()
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err = q.Exec()
+	if err != nil {
+		log.Fatal(err)
+	}
 	return db
 }

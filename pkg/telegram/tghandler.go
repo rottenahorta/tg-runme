@@ -1,19 +1,17 @@
 package tg
 
 import (
-	//"fmt"
 	"log"
 	"net/url"
 	"strconv"
 	"strings"
-	//zp "github.com/rottenahorta/tgbotsche/pkg/zepp"
 )
 
 func (c *Client) doCmd(msg, uname string, chatId int) error {
 	log.Printf("recieved: %s\nfrom: %s", msg, uname)
 	if u, err := url.Parse(msg); err == nil {
 		if strings.Contains(u.Host, "api-mifit") {
-			s, _ := c.GetZeppToken(u.Query().Get("code"))
+			s, _ := c.GetZeppToken(u.Query().Get("code"), chatId, )
 			log.Printf("apptoken: %s",s)
 		}
 	}

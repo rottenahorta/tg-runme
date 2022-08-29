@@ -7,9 +7,10 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"strings"
 	"strconv"
+	"strings"
 
+	"github.com/jmoiron/sqlx"
 	er "github.com/rottenahorta/tgbotsche/pkg/int"
 	zp "github.com/rottenahorta/tgbotsche/pkg/zepp"
 )
@@ -75,7 +76,7 @@ func (c *Client) GetZeppData() (zp.Update, error) {
 	return res, nil
 }
 
-func (c *Client) GetZeppToken(code string) (string, error) {
+func (c *Client) GetZeppToken(code string, chatId int, db *sqlx.DB) (string, error) {
 	var res zp.ResponseToken
 	q := url.Values{}
 	q.Set("code",code)
@@ -94,6 +95,17 @@ func (c *Client) GetZeppToken(code string) (string, error) {
 	if err := json.Unmarshal(b, &res); err != nil {
 		return "", er.Log("cant unmarshal zepp apptoken", err)
 	}
+
+	qdb, err := db.Prepare("INSERT INTO users (chatid,zptoken) VALUES($1,$2)")
+	defer qdb.Close()
+	if err != nil {
+		return "", er.Log("cant prepare db insertin zptoken", err)
+	}
+	_, err = qdb.Exec(chatId, res.TokenInfo.AppToken)
+	if err != nil {
+		return "", er.Log("cant exec db insertin zptoken", err)
+	}
+
 	return res.TokenInfo.AppToken, nil
 }
 
