@@ -99,16 +99,12 @@ func (c *Client) GetZeppToken(code string, chatId int) (error) {
 		return er.Log("cant unmarshal zepp apptoken", err)
 	}
 
-	qdb, err := c.repo.DBPostgres.Prepare("INSERT INTO users (chatid,zptoken) VALUES($1,$2)")
-	defer qdb.Close()
-	if err != nil {
-		return er.Log("cant prepare db insertin zptoken", err)
+	var id int
+	row := c.repo.DBPostgres.QueryRow("INSERT INTO users (chatid,zptoken) values ($1,$2) RETURNING id", chatId, res.TokenInfo.AppToken)
+	if err := row.Scan(&id); err != nil {
+		return er.Log("cant retrieve zptoken", err)
 	}
-	_, err = qdb.Exec(chatId, res.TokenInfo.AppToken)
-	if err != nil {
-		return er.Log("cant exec db insertin zptoken", err)
-	}
-
+	log.Printf("new zptoken retrieved w id: %d", id)
 	return nil
 }
 
