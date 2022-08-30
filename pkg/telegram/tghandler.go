@@ -5,14 +5,17 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+
+	er "github.com/rottenahorta/tgbotsche/pkg/int"
 )
 
 func (c *Client) doCmd(msg, uname string, chatId int) error {
 	log.Printf("recieved: %s\nfrom: %s", msg, uname)
 	if u, err := url.Parse(msg); err == nil {
 		if strings.Contains(u.Host, "api-mifit") {
-			s, _ := c.GetZeppToken(u.Query().Get("code"), chatId, )
-			log.Printf("apptoken: %s",s)
+			if err := c.GetZeppToken(u.Query().Get("code"), chatId); err != nil {
+				er.Log("cant obtain zpcode", err)
+			}
 		}
 	}
 	switch msg {
@@ -20,6 +23,7 @@ func (c *Client) doCmd(msg, uname string, chatId int) error {
 	case "/run": return c.cmdRunStart(uname, chatId)
 	case "/total": return c.cmdGetTotalDist(uname, chatId)
 	case "/last": return c.cmdGetLastRun(uname, chatId)
+	case "/token": return c.cmdGetToken(uname, chatId)
 	default: return c.Send(chatId, "Я ничего не понимаю")
 	}
 }
@@ -66,4 +70,14 @@ func (c *Client) cmdGetLastRun (uname string, chatid int) error {
 																		}else {
 																			return "0"+strconv.Itoa(t)
 																		}}())
+}
+
+func (c *Client) cmdGetToken (uname string, chatid int) error {
+	var zpToken string
+	q := "SELECT zptoken FROM users WHERE chatid = $1"
+	err := c.repo.DBPostgres.Get(&zpToken, q, chatid)
+	if err != nil {
+		return er.Log("cant retrieve zptoken", err)
+	}
+	return c.Send(chatid, "token from db: "+zpToken)
 }

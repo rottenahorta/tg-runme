@@ -10,8 +10,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/jmoiron/sqlx"
+	//"github.com/jmoiron/sqlx"
 	er "github.com/rottenahorta/tgbotsche/pkg/int"
+	repo "github.com/rottenahorta/tgbotsche/pkg/repo"
 	zp "github.com/rottenahorta/tgbotsche/pkg/zepp"
 )
 
@@ -21,15 +22,17 @@ type Client struct {
 	botPath    string
 	listenPort string
 	tghost     string
+	repo 	   *repo.Repo
 }
 
-func NewClient(h, t, lp string) *Client {
+func NewClient(h, t, lp, r string) *Client {
 	return &Client{
 		client:     http.Client{},
 		botPath:    makePath(t),
 		host:       h,
 		tghost:     "api.telegram.org",
-		listenPort: lp}
+		listenPort: lp,
+		repo:		repo.NewRepo(r)}
 }
 
 func (c *Client) Update() {
@@ -76,7 +79,7 @@ func (c *Client) GetZeppData() (zp.Update, error) {
 	return res, nil
 }
 
-func (c *Client) GetZeppToken(code string, chatId int, db *sqlx.DB) (string, error) {
+func (c *Client) GetZeppToken(code string, chatId int) (error) {
 	var res zp.ResponseToken
 	q := url.Values{}
 	q.Set("code",code)
@@ -89,24 +92,24 @@ func (c *Client) GetZeppToken(code string, chatId int, db *sqlx.DB) (string, err
 	q.Set("app_name","com.xiaomi.hm.health")
 	b, err := c.doRequest("account.huami.com", "v2/client/login", "", "", "POST", q)
 	if err != nil {
-		return "", er.Log("cant get zepp apptoken", err)
+		return er.Log("cant get zepp apptoken", err)
 	}
 	log.Print(string(b))
 	if err := json.Unmarshal(b, &res); err != nil {
-		return "", er.Log("cant unmarshal zepp apptoken", err)
+		return er.Log("cant unmarshal zepp apptoken", err)
 	}
 
-	qdb, err := db.Prepare("INSERT INTO users (chatid,zptoken) VALUES($1,$2)")
+	qdb, err := c.repo.DBPostgres.Prepare("INSERT INTO users (chatid,zptoken) VALUES($1,$2)")
 	defer qdb.Close()
 	if err != nil {
-		return "", er.Log("cant prepare db insertin zptoken", err)
+		return er.Log("cant prepare db insertin zptoken", err)
 	}
 	_, err = qdb.Exec(chatId, res.TokenInfo.AppToken)
 	if err != nil {
-		return "", er.Log("cant exec db insertin zptoken", err)
+		return er.Log("cant exec db insertin zptoken", err)
 	}
 
-	return res.TokenInfo.AppToken, nil
+	return nil
 }
 
 func (c *Client) doRequest(host, path, headerName, headerValue, method string, q url.Values) (d []byte, err error) {

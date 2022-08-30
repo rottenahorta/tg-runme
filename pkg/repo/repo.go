@@ -5,9 +5,9 @@ import (
 )
 
 type Repo struct {
-	dbPostgres *sqlx.DB
+	DBPostgres *sqlx.DB
 }
 
 func NewRepo(p string) *Repo {
-	return &Repo{dbPostgres:NewDBPostgres(p)}
+	return &Repo{DBPostgres:NewDBPostgres(p)}
 }
