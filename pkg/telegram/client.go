@@ -6,11 +6,9 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	//"os"
 	"strconv"
 	"strings"
 
-	//"github.com/jmoiron/sqlx"
 	er "github.com/rottenahorta/tgbotsche/pkg/int"
 	repo "github.com/rottenahorta/tgbotsche/pkg/repo"
 	zp "github.com/rottenahorta/tgbotsche/pkg/zepp"
