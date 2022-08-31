@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq" // do i need it?
+	//_ "github.com/lib/pq" // do i need it?
 
 	er "github.com/rottenahorta/tgbotsche/pkg/int"
 )
