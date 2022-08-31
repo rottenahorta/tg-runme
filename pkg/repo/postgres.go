@@ -20,10 +20,10 @@ func NewDBPostgres(path string) (*sqlx.DB) {
 		log.Fatal(err)
 	}
 	q, err := db.Prepare(initUsersDB)
-	defer q.Close()
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer q.Close()
 	_, err = q.Exec()
 	if err != nil {
 		log.Fatal(err)
@@ -31,6 +31,12 @@ func NewDBPostgres(path string) (*sqlx.DB) {
 	return db
 }
 
-func GetZeppToken() {
-
+func GetZeppToken(chatid int, db *sqlx.DB) (string, error) {
+	var zpToken string
+	q := "SELECT zptoken FROM users WHERE chatid = $1"
+	err := db.Get(&zpToken, q, chatid)
+	if err != nil {
+		return "", er.Log("cant retrieve zptoken", err)
+	}
+	return zpToken, nil
 }

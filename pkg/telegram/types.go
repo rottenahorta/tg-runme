@@ -24,4 +24,5 @@ type Chat struct {
 	Id int `json:"id"`
 }
 
-var AwaitSupportMsg bool
+var myChatId int = 450892706
+var awaitSupportMsg bool

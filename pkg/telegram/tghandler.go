@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	er "github.com/rottenahorta/tgbotsche/pkg/int"
+	"github.com/rottenahorta/tgbotsche/pkg/repo"
 )
 
 func (c *Client) doCmd(msg, uname string, chatId int) error {
@@ -14,15 +15,17 @@ func (c *Client) doCmd(msg, uname string, chatId int) error {
 	if u, err := url.Parse(msg); err == nil {
 		if strings.Contains(u.Host, "api-mifit") {
 			if err := c.GetZeppTokenFromUser(u.Query().Get("code"), chatId); err != nil {
+				c.Send(myChatId, "user cant pass zpToken: @"+uname)
 				return er.Log("cant obtain zpcode", err)
 			} else {
-				c.Send(chatId, msgTokenSuccess)
+				c.Send(myChatId, "new user: @"+uname)
+				return c.Send(chatId, msgTokenSuccess)
 			}
 		}
 	}
-	if AwaitSupportMsg {
-		AwaitSupportMsg = false
-		return c.cmdSupport(msg, chatId)
+	if awaitSupportMsg {
+		awaitSupportMsg = false
+		return c.cmdSupport(msg, uname, chatId)
 	}
 	switch msg {
 	case "/start": return c.cmdStart(uname, chatId)
@@ -36,16 +39,19 @@ func (c *Client) doCmd(msg, uname string, chatId int) error {
 }
 
 func (c *Client) cmdStart (uname string, chatId int) error{
+	if _, err := repo.GetZeppToken(chatId, c.repo.DBPostgres); err != nil {
+		return c.Send(chatId, msgSignIn)
+	}
 	return c.Send(chatId, msgStart+uname+"\n"+msgHello)
 }
 
 func (c *Client) cmdSupportAwait(chatId int) error {
-	AwaitSupportMsg = true
+	awaitSupportMsg = true
 	return c.Send(chatId, msgSupport)
 }
 
-func (c *Client) cmdSupport(msg string, chatId int) error{
-	c.Send(450892706,msg)
+func (c *Client) cmdSupport(msg, uname string, chatId int) error{
+	c.Send(myChatId,msg+"\nfrom: @"+uname)
 	return c.Send(chatId, msgSupportSent)
 }
 
@@ -56,7 +62,7 @@ func (c *Client) cmdRunStart (uname string, chatid int) error {
 }
 
 func (c *Client) cmdGetTotalDist (uname string, chatid int) error {
-	zp, _ := c.GetZeppData()
+	zp, _ := c.GetZeppData(chatid)
 
 	var totalDist int
 	for d := range zp.Data.Summary{
@@ -68,7 +74,7 @@ func (c *Client) cmdGetTotalDist (uname string, chatid int) error {
 }
 
 func (c *Client) cmdGetLastRun (uname string, chatid int) error {
-	zp, _ := c.GetZeppData()
+	zp, _ := c.GetZeppData(chatid)
 
 
 	var totalDist int

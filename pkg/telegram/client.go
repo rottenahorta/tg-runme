@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
+	//"os"
 	"strconv"
 	"strings"
 
@@ -66,9 +66,13 @@ func (c *Client) Send(chatId int, m string) error {
 	return nil
 }
 
-func (c *Client) GetZeppData() (zp.Update, error) {
+func (c *Client) GetZeppData(chatId int) (zp.Update, error) {
+	zpToken, err := repo.GetZeppToken(chatId, c.repo.DBPostgres)
+	if err != nil {
+		return zp.Update{}, er.Log("cant retrieve zpToken from db", err)
+	}
 	var res zp.Update
-	b, err := c.doRequest("api-mifit-de2.huami.com", "v1/sport/run/history.json", "apptoken", os.Getenv("HUAMITOKEN"), "GET", nil)
+	b, err := c.doRequest("api-mifit-de2.huami.com", "v1/sport/run/history.json", "apptoken", zpToken, "GET", nil)
 	if err != nil {
 		return zp.Update{}, er.Log("cant get zepp data", err)
 	}
