@@ -79,7 +79,7 @@ func (c *Client) GetZeppData() (zp.Update, error) {
 	return res, nil
 }
 
-func (c *Client) GetZeppToken(code string, chatId int) (error) {
+func (c *Client) GetZeppTokenFromUser(code string, chatId int) (error) {
 	var res zp.ResponseToken
 	q := url.Values{}
 	q.Set("code",code)

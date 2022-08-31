@@ -23,3 +23,5 @@ type From struct {
 type Chat struct {
 	Id int `json:"id"`
 }
+
+var AwaitSupportMsg bool

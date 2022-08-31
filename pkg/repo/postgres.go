@@ -30,3 +30,7 @@ func NewDBPostgres(path string) (*sqlx.DB) {
 	}
 	return db
 }
+
+func GetZeppToken() {
+
+}

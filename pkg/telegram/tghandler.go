@@ -13,16 +13,20 @@ func (c *Client) doCmd(msg, uname string, chatId int) error {
 	log.Printf("recieved: %s\nfrom: %s, chatid: %d", msg, uname, chatId)
 	if u, err := url.Parse(msg); err == nil {
 		if strings.Contains(u.Host, "api-mifit") {
-			if err := c.GetZeppToken(u.Query().Get("code"), chatId); err != nil {
+			if err := c.GetZeppTokenFromUser(u.Query().Get("code"), chatId); err != nil {
 				return er.Log("cant obtain zpcode", err)
 			} else {
 				c.Send(chatId, msgTokenSuccess)
 			}
 		}
 	}
+	if AwaitSupportMsg {
+		AwaitSupportMsg = false
+		return c.cmdSupport(msg, chatId)
+	}
 	switch msg {
 	case "/start": return c.cmdStart(uname, chatId)
-	case "/support": return c.Send(chatId,msg)
+	case "/support": return c.cmdSupportAwait(chatId)
 	case "/run": return c.cmdRunStart(uname, chatId)
 	case "/total": return c.cmdGetTotalDist(uname, chatId)
 	case "/last": return c.cmdGetLastRun(uname, chatId)
@@ -33,6 +37,16 @@ func (c *Client) doCmd(msg, uname string, chatId int) error {
 
 func (c *Client) cmdStart (uname string, chatId int) error{
 	return c.Send(chatId, msgStart+uname+"\n"+msgHello)
+}
+
+func (c *Client) cmdSupportAwait(chatId int) error {
+	AwaitSupportMsg = true
+	return c.Send(chatId, msgSupport)
+}
+
+func (c *Client) cmdSupport(msg string, chatId int) error{
+	c.Send(450892706,msg)
+	return c.Send(chatId, msgSupportSent)
 }
 
 func (c *Client) cmdRunStart (uname string, chatid int) error {
