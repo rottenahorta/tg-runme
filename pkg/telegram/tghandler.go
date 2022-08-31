@@ -10,7 +10,7 @@ import (
 )
 
 func (c *Client) doCmd(msg, uname string, chatId int) error {
-	log.Printf("recieved: %s\nfrom: %s", msg, uname)
+	log.Printf("recieved: %s\nfrom: %s, chatid: %d", msg, uname, chatId)
 	if u, err := url.Parse(msg); err == nil {
 		if strings.Contains(u.Host, "api-mifit") {
 			if err := c.GetZeppToken(u.Query().Get("code"), chatId); err != nil {
@@ -20,6 +20,7 @@ func (c *Client) doCmd(msg, uname string, chatId int) error {
 	}
 	switch msg {
 	case "/start": return c.cmdStart(uname, chatId)
+	case "/support": return c.Send(chatId,msg)
 	case "/run": return c.cmdRunStart(uname, chatId)
 	case "/total": return c.cmdGetTotalDist(uname, chatId)
 	case "/last": return c.cmdGetLastRun(uname, chatId)
