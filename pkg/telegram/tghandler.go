@@ -40,6 +40,7 @@ func (c *Client) doCmd(msg, uname string, chatId int) error {
 
 func (c *Client) cmdStart (uname string, chatId int) error{
 	if _, err := repo.GetZeppToken(chatId, c.repo.DBPostgres); err != nil {
+		er.Log("zpToken for this user isn't exist", err)
 		return c.Send(chatId, msgSignIn)
 	}
 	return c.Send(chatId, msgStart+uname+"\n"+msgHello)
