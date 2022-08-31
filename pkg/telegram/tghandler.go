@@ -14,7 +14,9 @@ func (c *Client) doCmd(msg, uname string, chatId int) error {
 	if u, err := url.Parse(msg); err == nil {
 		if strings.Contains(u.Host, "api-mifit") {
 			if err := c.GetZeppToken(u.Query().Get("code"), chatId); err != nil {
-				er.Log("cant obtain zpcode", err)
+				return er.Log("cant obtain zpcode", err)
+			} else {
+				c.Send(chatId, msgTokenSuccess)
 			}
 		}
 	}
@@ -25,7 +27,7 @@ func (c *Client) doCmd(msg, uname string, chatId int) error {
 	case "/total": return c.cmdGetTotalDist(uname, chatId)
 	case "/last": return c.cmdGetLastRun(uname, chatId)
 	case "/token": return c.cmdGetToken(uname, chatId)
-	default: return c.Send(chatId, "Я ничего не понимаю")
+	default: return c.Send(chatId, "Я ничего не понимаю. Ты можешь обратиться в /support")
 	}
 }
 
