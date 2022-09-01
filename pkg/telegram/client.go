@@ -81,6 +81,7 @@ func (c *Client) GetZeppData(chatId int) (zp.Update, error) {
 	}
 	log.Printf("getzeppdata: code %s", res.Data.Code)
 	if res.Data.Code == "0102" {
+		c.Send(chatId, msgErrorToken+"\n"+msgUpdateToken+"\n"+authLinkZepp+"\n"+msgSupport)
 		return res, er.Log("getzeppdata: ",errors.New("invalid zp token"))
 	}
 	log.Printf("zepp req summary: %v", res.Data.Summary)

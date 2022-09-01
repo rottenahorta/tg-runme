@@ -45,13 +45,12 @@ func (c *Client) cmdStart (uname string, chatId int) error{
 	if err == nil {
 		return c.Send(chatId, msgSignIn)
 	}
-	c.Send(chatId, msgStart+uname+"\n"+msgHello)
-	return c.Send(chatId, authLinkZepp)
+	return c.Send(chatId, msgStart+uname+"\n"+msgHello+"\n"+msgUpdateToken+"\n"+msgSupport+"\n"+authLinkZepp)
 }
 
 func (c *Client) cmdSupportAwait(chatId int) error {
 	awaitSupportMsg = true
-	return c.Send(chatId, msgSupport)
+	return c.Send(chatId, msgSupportGet)
 }
 
 func (c *Client) cmdSupport(msg, uname string, chatId int) error{
