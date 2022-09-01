@@ -78,7 +78,7 @@ func (c *Client) GetZeppData(chatId int) (zp.Update, error) {
 	if err := json.Unmarshal(b, &res); err != nil {
 		return zp.Update{}, er.Log("cant unmarshal zepp data", err)
 	}
-	log.Printf("getzeppdata: code %d", res.Code)
+	log.Printf("getzeppdata: code %d", &res.Code)
 	log.Printf("zepp req summary: %v", res.Data.Summary)
 	return res, nil
 }
