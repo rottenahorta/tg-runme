@@ -85,7 +85,10 @@ func (c *Client) cmdGetLastRun (uname string, chatid int) error {
 		totalDist += int(n)
 	}
 
-	t, _ := strconv.Atoi(zp.Data.Summary[0].Runtime) 
+	t, err := strconv.Atoi(zp.Data.Summary[0].Runtime) 
+	if err != nil {
+		return er.Log("cant parse runtime data /last", err)
+	}
 	p, _ := strconv.ParseFloat(zp.Data.Summary[0].AvgPace, 64)
 	return c.Send(chatid, "Последняя пробежка была целых "+zp.Data.Summary[0].Distance+
 				"м\nТы ее завершил за "+strconv.Itoa(t/60)+":"+strconv.Itoa(t%60)+
