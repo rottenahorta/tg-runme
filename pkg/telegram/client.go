@@ -47,6 +47,7 @@ func (c *Client) Update() {
 			log.Fatal(err)
 			return
 		}
+		log.Print("msg text debug inside Update()" + res.Msg.Text)
 		c.Fetch(res)
 	}
 
@@ -126,7 +127,6 @@ func (c *Client) doRequest(host, path, headerName, headerValue, method string, q
 	}
 	req.Header.Set("Content-Type","application/json") // todo : do i need it?
 	req.URL.RawQuery = q.Encode()
-	log.Print("right before sendin req")
 	resp, err := c.client.Do(req)
 	if err != nil {
 		return nil, err

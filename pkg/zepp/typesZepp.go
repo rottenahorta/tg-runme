@@ -2,6 +2,7 @@ package zp
 
 type Update struct {
 	Data Data `json:"data"` 
+	Code *string `json:"code"` 
 }
 
 type Data struct {
