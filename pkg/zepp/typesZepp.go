@@ -6,7 +6,7 @@ type Update struct {
 
 type Data struct {
 	Summary []Summary `json:"summary"` 
-	Code *string `json:"code"`
+	Code string `json:"code"`
 }
 
 type Summary struct {
