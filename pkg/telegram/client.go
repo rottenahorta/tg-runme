@@ -130,7 +130,7 @@ func (c *Client) doRequest(host, path, headerName, headerValue, method string, q
 	if headerName != "" {
 		req.Header.Set(headerName, headerValue)
 	}
-	//req.Header.Set("Content-Type","application/json") // todo : do i need it?
+	req.Header.Set("Content-Type","application/json") // todo : do i need it?
 	req.URL.RawQuery = q.Encode()
 	resp, err := c.client.Do(req)
 	if err != nil {
