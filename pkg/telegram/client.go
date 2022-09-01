@@ -2,6 +2,7 @@ package tg
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
 	"log"
 	"net/http"
@@ -79,6 +80,9 @@ func (c *Client) GetZeppData(chatId int) (zp.Update, error) {
 		return zp.Update{}, er.Log("cant unmarshal zepp data", err)
 	}
 	log.Printf("getzeppdata: code %s", res.Data.Code)
+	if res.Data.Code == "0102" {
+		return res, er.Log("getzeppdata: ",errors.New("invalid zp token"))
+	}
 	log.Printf("zepp req summary: %v", res.Data.Summary)
 	return res, nil
 }
