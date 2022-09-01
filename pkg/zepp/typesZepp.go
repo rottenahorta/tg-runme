@@ -2,7 +2,7 @@ package zp
 
 type Update struct {
 	Data Data `json:"data"` 
-	//Code *int `json:"code"` 
+	Code *int `json:"code"` 
 }
 
 type Data struct {
