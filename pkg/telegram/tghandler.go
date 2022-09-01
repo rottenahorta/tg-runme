@@ -38,7 +38,6 @@ func (c *Client) doCmd(msg, uname string, chatId int) error {
 	switch msg {
 	case "/start": return c.cmdStart(uname, chatId)
 	case "/support": return c.cmdSupportAwait(chatId)
-	case "/run": return c.cmdRunStart(uname, chatId)
 	case "/total": return c.cmdGetTotalDist(uname, chatId)
 	case "/last": return c.cmdGetLastRun(uname, chatId)
 	case "/token": return c.cmdGetToken(uname, chatId)
@@ -46,7 +45,7 @@ func (c *Client) doCmd(msg, uname string, chatId int) error {
 	}
 }
 
-func (c *Client) cmdStart (uname string, chatId int) error{
+func (c *Client) cmdStart(uname string, chatId int) error{
 	_, err := repo.GetZeppToken(chatId, c.repo.DBPostgres)
 	if err == nil {
 		return c.Send(chatId, msgSignIn)
@@ -69,13 +68,7 @@ func (c *Client) cmdAnswerSupport(msg string, chatId int) error {
 	return c.Send(cid, msg[18:])
 }
 
-func (c *Client) cmdRunStart (uname string, chatid int) error {
-	opponentUname := "rottenahorta"
-	opponentFirstRunDist := "300"
-	return c.Send(chatid, msgStartFirstRun + opponentUname + msgStartFirstRun2 + opponentFirstRunDist + msgStartFirstRun3)
-}
-
-func (c *Client) cmdGetTotalDist (uname string, chatid int) error {
+func (c *Client) cmdGetTotalDist(uname string, chatid int) error {
 	zp, _ := c.GetZeppData(chatid)
 
 	var totalDist int
@@ -87,7 +80,7 @@ func (c *Client) cmdGetTotalDist (uname string, chatid int) error {
 	return c.Send(chatid, "Ты пробежал целых "+strconv.Itoa(totalDist)+"м")
 }
 
-func (c *Client) cmdGetLastRun (uname string, chatid int) error {
+func (c *Client) cmdGetLastRun(uname string, chatid int) error {
 	zp, _ := c.GetZeppData(chatid)
 	log.Print(reflect.TypeOf(zp))
 	if zp.Data.Summary == nil {
@@ -116,7 +109,7 @@ func (c *Client) cmdGetLastRun (uname string, chatid int) error {
 																		}}())
 }
 
-func (c *Client) cmdGetToken (uname string, chatid int) error {
+func (c *Client) cmdGetToken(uname string, chatid int) error {
 	var zpToken string
 	q := "SELECT zptoken FROM users WHERE chatid = $1"
 	err := c.repo.DBPostgres.Get(&zpToken, q, chatid)
