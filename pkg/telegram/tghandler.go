@@ -29,6 +29,12 @@ func (c *Client) doCmd(msg, uname string, chatId int) error {
 		awaitSupportMsg = false
 		return c.cmdSupport(msg, uname, chatId)
 	}
+	if strings.Contains(msg, "/answer") {
+		if chatId != myChatId {
+			return c.Send(chatId, "Я ничего не понимаю. Ты можешь обратиться в /support")
+		}
+		return c.cmdAnswerSupport(msg, chatId)
+	}
 	switch msg {
 	case "/start": return c.cmdStart(uname, chatId)
 	case "/support": return c.cmdSupportAwait(chatId)
@@ -56,6 +62,10 @@ func (c *Client) cmdSupportAwait(chatId int) error {
 func (c *Client) cmdSupport(msg, uname string, chatId int) error{
 	c.Send(myChatId,msg+"\nfrom: @"+uname)
 	return c.Send(chatId, msgSupportSent)
+}
+
+func (c *Client) cmdAnswerSupport(msg string, chatId int) error {
+	return c.Send(chatId, msg[18:])
 }
 
 func (c *Client) cmdRunStart (uname string, chatid int) error {
