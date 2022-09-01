@@ -47,7 +47,6 @@ func (c *Client) Update() {
 			log.Fatal(err)
 			return
 		}
-		log.Print("msg text debug inside Update()" + res.Msg.Text)
 		c.Fetch(res)
 	}
 
@@ -75,6 +74,7 @@ func (c *Client) GetZeppData(chatId int) (zp.Update, error) {
 	if err != nil {
 		return zp.Update{}, er.Log("cant get zepp data", err)
 	}
+	log.Print("getzeppdata: " + string(b))
 	if err := json.Unmarshal(b, &res); err != nil {
 		return zp.Update{}, er.Log("cant unmarshal zepp data", err)
 	}
@@ -97,7 +97,7 @@ func (c *Client) GetZeppTokenFromUser(code string, chatId int) (error) {
 	if err != nil {
 		return er.Log("cant get zepp apptoken", err)
 	}
-	log.Print(string(b))
+	log.Print("getzepptokenfromuser: " + string(b))
 	if err := json.Unmarshal(b, &res); err != nil {
 		return er.Log("cant unmarshal zepp apptoken", err)
 	}
