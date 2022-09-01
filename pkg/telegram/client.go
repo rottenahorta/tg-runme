@@ -123,14 +123,14 @@ func (c *Client) doRequest(host, path, headerName, headerValue, method string, q
 		Host:   host,
 		Path:   path,
 	}
-	req, err := http.NewRequest(method, u.String(), strings.NewReader(q.Encode())) // todo : do i need body?
+	req, err := http.NewRequest(method, u.String(), strings.NewReader(q.Encode())) 
 	if err != nil {
 		return nil, err
 	}
 	if headerName != "" {
 		req.Header.Set(headerName, headerValue)
 	}
-	req.Header.Set("Content-Type","application/json") // todo : do i need it?
+	req.Header.Set("Content-Type","application/json")
 	req.URL.RawQuery = q.Encode()
 	resp, err := c.client.Do(req)
 	if err != nil {
