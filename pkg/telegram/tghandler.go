@@ -65,7 +65,8 @@ func (c *Client) cmdSupport(msg, uname string, chatId int) error{
 }
 
 func (c *Client) cmdAnswerSupport(msg string, chatId int) error {
-	return c.Send(chatId, msg[18:] + "\n" + msg[9:17])
+	cid, _ := strconv.Atoi(msg[8:17])
+	return c.Send(cid, msg[18:])
 }
 
 func (c *Client) cmdRunStart (uname string, chatid int) error {
