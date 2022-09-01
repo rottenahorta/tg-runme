@@ -1,8 +1,10 @@
 package tg
 
 import (
+	"errors"
 	"log"
 	"net/url"
+	"reflect"
 	"strconv"
 	"strings"
 
@@ -77,6 +79,10 @@ func (c *Client) cmdGetTotalDist (uname string, chatid int) error {
 
 func (c *Client) cmdGetLastRun (uname string, chatid int) error {
 	zp, _ := c.GetZeppData(chatid)
+	log.Print(reflect.TypeOf(zp))
+	if zp.Data.Summary == nil {
+		return er.Log("empty summary zp data", errors.New("handler: empty zp data retrieved"))
+	}
 
 
 	var totalDist int
