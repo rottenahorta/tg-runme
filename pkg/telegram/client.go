@@ -79,12 +79,11 @@ func (c *Client) GetZeppData(chatId int) (zp.Update, error) {
 	if err := json.Unmarshal(b, &res); err != nil {
 		return zp.Update{}, er.Log("cant unmarshal zepp data", err)
 	}
-	log.Printf("getzeppdata: code %s", res.Data.Code)
 	if res.Data.Code == "0102" {
 		c.Send(chatId, msgErrorToken+"\n"+msgUpdateToken+"\n"+authLinkZepp+"\n"+msgSupport)
-		return res, er.Log("getzeppdata: ",errors.New("invalid zp token"))
+		return res, er.Log("getzeppdata: ", errors.New("invalid zp token"))
 	}
-	log.Printf("zepp req summary: %v", res.Data.Summary)
+	log.Printf("zepp req: %v", res.Data)
 	return res, nil
 }
 
@@ -109,7 +108,7 @@ func (c *Client) GetZeppTokenFromUser(code string, chatId int) (error) {
 	}
 
 	var id int
-	row := c.repo.DBPostgres.QueryRow("INSERT INTO users (chatid,zptoken) values ($1,$2) RETURNING id", chatId, res.TokenInfo.AppToken)
+	row := c.repo.DBPostgres.QueryRow("INSERT INTO users (chatid,zptoken) values ($1,$2) ON CONFLICT (chatid) DO UPDATE SET zptoken = $2 RETURNING id", chatId, res.TokenInfo.AppToken)
 	if err := row.Scan(&id); err != nil {
 		return er.Log("cant retrieve zptoken", err)
 	}
