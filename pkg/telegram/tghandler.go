@@ -60,12 +60,12 @@ func (c *Client) cmdSupportAwait(chatId int) error {
 }
 
 func (c *Client) cmdSupport(msg, uname string, chatId int) error{
-	c.Send(myChatId,msg+"\nfrom: @"+uname)
+	c.Send(myChatId,msg+"\nfrom: @"+uname+"\nID: "+strconv.Itoa(chatId))
 	return c.Send(chatId, msgSupportSent)
 }
 
 func (c *Client) cmdAnswerSupport(msg string, chatId int) error {
-	return c.Send(chatId, msg[18:])
+	return c.Send(chatId, msg[18:] + "\n" + msg[9:17])
 }
 
 func (c *Client) cmdRunStart (uname string, chatid int) error {
