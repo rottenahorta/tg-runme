@@ -1,12 +1,12 @@
 package zp
 
 type Update struct {
-	Data Data `json:"data"` 
-	Code *int `json:"code"` 
+	Data Data `json:"data"`  
 }
 
 type Data struct {
 	Summary []Summary `json:"summary"` 
+	Code *string `json:"code"`
 }
 
 type Summary struct {
