@@ -75,16 +75,31 @@ func (c *Client) GetZeppData(chatId int) (zp.Update, error) {
 	if err != nil {
 		return zp.Update{}, er.Log("cant get zepp data", err)
 	}
-	log.Print("getzeppdata: " + string(b))
+	log.Print("GetZeppData: " + string(b))
 	if err := json.Unmarshal(b, &res); err != nil {
 		return zp.Update{}, er.Log("cant unmarshal zepp data", err)
 	}
 	if res.Data.Code == "0102" {
 		c.Send(chatId, msgErrorToken+"\n"+msgUpdateToken+"\n"+authLinkZepp+"\n"+msgSupport)
-		return res, er.Log("getzeppdata: ", errors.New("invalid zp token"))
+		return res, er.Log("GetZeppData: ", errors.New("invalid zp token"))
 	}
 	log.Printf("zepp req: %v", res.Data)
 	return res, nil
+}
+
+func (c *Client) GetZeppLastDistByToken(zpToken string) (string, error) {
+	var res zp.Update
+	b, err := c.doRequest("api-mifit-de2.huami.com", "v1/sport/run/history.json", "apptoken", zpToken, "GET", nil)
+	if err != nil {
+		return "", er.Log("cant get zepp data", err)
+	}
+	if err := json.Unmarshal(b, &res); err != nil {
+		return "", er.Log("cant unmarshal zepp data", err)
+	}
+	if res.Data.Code == "0102" {
+		return "", er.Log("GetZeppLastDistByToken: ", errors.New("invalid zp token"))
+	}
+	return res.Data.Summary[0].Distance, nil
 }
 
 func (c *Client) GetZeppTokenFromUser(code string, chatId int) (error) {
