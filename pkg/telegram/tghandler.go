@@ -142,11 +142,11 @@ func (c *Client) cmdGetRandomDistFromDB() (int, error) {
 	if err != nil {
 		return 0, er.Log("cant get lastdist for /runfight from db", err)
 	}
-	ld, err:= strconv.Atoi(ldstr)
+	ld, err:= strconv.ParseFloat(ldstr, 64)
 	if err != nil {
 		return 0, er.Log("cant parse lastdist for /runfight from db", err)
 	}
-	return ld, nil
+	return int(ld), nil
 }
 
 func (c *Client) cmdGetToken(uname string, chatid int) error {
