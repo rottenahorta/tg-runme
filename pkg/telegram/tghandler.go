@@ -116,6 +116,7 @@ func (c *Client) cmdRunfight(chatid int) error {
 	if err == nil {
 		 return c.Send(chatid, "Пользователь \"пожелал скрыть свой никнейм\" недавно пробежал "+strconv.Itoa(ld)+motivStr)
 	}
+	er.Log("cantget lastdist from db /runfight", err)
 
 	zp, _ := c.GetZeppData(chatid)
 	if zp.Data.Summary == nil {
@@ -124,6 +125,7 @@ func (c *Client) cmdRunfight(chatid int) error {
 	ld, _ = strconv.Atoi(zp.Data.Summary[0].Distance)
 	rand.Seed(time.Now().UnixNano())
 	low := ld - ld / 10
+	log.Printf("lastdist /runfight: %d", ld)
 	randdist := rand.Intn(ld + ld / 10 - low) + low
 	return c.Send(chatid, "Пользователь \"пожелал скрыть свой никнейм\" недавно пробежал "+strconv.Itoa(randdist)+motivStr)
 }
