@@ -122,7 +122,8 @@ func (c *Client) cmdRunfight(chatid int) error {
 	if zp.Data.Summary == nil {
 		return er.Log("empty summary zp data", errors.New("handler: empty zp data retrieved"))
 	}
-	ld, _ = strconv.Atoi(zp.Data.Summary[0].Distance)
+	ldfl, _ := strconv.ParseFloat(zp.Data.Summary[0].Distance, 64)
+	ld = int(ldfl)
 	rand.Seed(time.Now().UnixNano())
 	low := ld - ld / 10
 	log.Printf("lastdist /runfight: %d", ld)
